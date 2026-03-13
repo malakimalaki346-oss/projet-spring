@@ -1,28 +1,26 @@
 package com.example.mini_projet.entities;
 
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profil {
+public class Livrable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String code; // ADMIN, DIRECTEUR, CHEF_PROJET, COMPTABLE, SECRETAIRE, TECHNICIEN
-
+    private String code;
     private String libelle;
     private String description;
+    private String cheminFichier;
 
-    @OneToMany(mappedBy = "profil")
-    private List<Employe> employes;
+    @ManyToOne
+    @JoinColumn(name = "phase_id")
+    private Phase phase;
 }

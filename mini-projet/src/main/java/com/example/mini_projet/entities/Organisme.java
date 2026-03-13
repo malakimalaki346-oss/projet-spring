@@ -1,7 +1,6 @@
 package com.example.mini_projet.entities;
 
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,17 +11,21 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Profil {
+public class Organisme {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String code; // ADMIN, DIRECTEUR, CHEF_PROJET, COMPTABLE, SECRETAIRE, TECHNICIEN
+    private String code;
 
-    private String libelle;
-    private String description;
+    private String nom;
+    private String adresse;
+    private String telephone;
+    private String contactNom;
+    private String contactEmail;
+    private String siteWeb;
 
-    @OneToMany(mappedBy = "profil")
-    private List<Employe> employes;
+    @OneToMany(mappedBy = "organisme")
+    private List<Projet> projets;
 }
