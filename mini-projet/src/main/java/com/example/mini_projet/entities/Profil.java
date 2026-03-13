@@ -3,7 +3,6 @@ package com.example.mini_projet.entities;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-
 @Entity
 @Table(name = "profils")
 public class Profil {
