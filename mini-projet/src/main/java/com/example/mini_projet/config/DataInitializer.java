@@ -17,7 +17,7 @@ public class DataInitializer implements CommandLineRunner {
     private final ProjetRepository projetRepository;
     private final PhaseRepository phaseRepository;
 
-    // ✅ CONSTRUCTEUR CORRIGÉ - Plus de PasswordEncoder
+    
     public DataInitializer(ProfilRepository profilRepository,
                            EmployeRepository employeRepository,
                            OrganismeRepository organismeRepository,
@@ -32,7 +32,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     @Transactional
-    public void run(String... args) {  // ✅ Plus de "throws Exception"
+    public void run(String... args) {  
         System.out.println("=== INITIALISATION DES DONNÉES DE TEST ===");
 
         createProfils();
@@ -46,7 +46,7 @@ public class DataInitializer implements CommandLineRunner {
         if (profilRepository.count() == 0) {
             System.out.println("Création des profils...");
 
-            // ✅ Utilisation du constructeur avec paramètres
+            
             profilRepository.save(new Profil("ADMIN", "Administrateur", "Gestion des utilisateurs"));
             profilRepository.save(new Profil("DIRECTEUR", "Directeur", "Gestion complète des projets"));
             profilRepository.save(new Profil("CHEF_PROJET", "Chef de Projet", "Gestion des phases et affectations"));
@@ -70,7 +70,7 @@ public class DataInitializer implements CommandLineRunner {
             admin.setPrenom("System");
             admin.setEmail("admin@toubkalit.ma");
             admin.setLogin("admin");
-            admin.setPassword("admin123");  // ✅ Mot de passe en clair
+            admin.setPassword("admin123");  
             admin.setTelephone("0600000000");
             admin.setProfil(adminProfil);
 
@@ -96,7 +96,7 @@ public class DataInitializer implements CommandLineRunner {
             Profil chefProfil = profilRepository.findByCode("CHEF_PROJET").orElseThrow();
             Employe chef = new Employe();
             chef.setMatricule("CP001");
-            chef.setNom("Alaoui");  // ✅ Ce n'est pas une erreur, juste un mot inconnu du dictionnaire
+            chef.setNom("Alaoui");  
             chef.setPrenom("Mohamed");
             chef.setEmail("m.alaoui@toubkalit.ma");
             chef.setLogin("chef");
