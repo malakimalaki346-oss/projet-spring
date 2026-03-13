@@ -14,4 +14,20 @@ import java.io.Serializable;
 public class AffectationId implements Serializable {
     private Long employeId;
     private Long phaseId;
+
+    public Long getEmployeId() {
+        return employeId;
+    }
+
+    public void setEmployeId(Long employeId) {
+        this.employeId = employeId;
+    }
+
+    public Long getPhaseId() {
+        return phaseId;
+    }
+
+    public void setPhaseId(Long phaseId) {
+        this.phaseId = phaseId;
+    }
 }

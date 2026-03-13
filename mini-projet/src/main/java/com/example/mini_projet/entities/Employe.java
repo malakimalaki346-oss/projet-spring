@@ -39,4 +39,92 @@ public class Employe {
 
     @OneToMany(mappedBy = "employe")
     private List<Affectation> affectations;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Profil getProfil() {
+        return profil;
+    }
+
+    public void setProfil(Profil profil) {
+        this.profil = profil;
+    }
+
+    public List<Projet> getProjetsDiriges() {
+        return projetsDiriges;
+    }
+
+    public void setProjetsDiriges(List<Projet> projetsDiriges) {
+        this.projetsDiriges = projetsDiriges;
+    }
+
+    public List<Affectation> getAffectations() {
+        return affectations;
+    }
+
+    public void setAffectations(List<Affectation> affectations) {
+        this.affectations = affectations;
+    }
 }
