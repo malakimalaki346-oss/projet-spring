@@ -30,7 +30,7 @@ public class ProjetController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SECRETAIRE', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('SECRETAIRE', 'DIRECTEUR', 'CHEF_PROJET')")
     @Operation(summary = "Créer un projet")
     public ResponseEntity<ProjetResponseDTO> create(@Valid @RequestBody ProjetRequestDTO requestDTO) {
         ProjetResponseDTO response = projetService.create(requestDTO);
