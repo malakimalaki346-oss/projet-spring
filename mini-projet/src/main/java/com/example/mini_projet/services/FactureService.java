@@ -115,6 +115,8 @@ public class FactureService {
         boolean exists = factureRepository.existsById(id);
         System.out.println(" La facture existe encore ? " + exists);
 
+        factureRepository.delete(facture);
+        factureRepository.flush();
         
 
     }

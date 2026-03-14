@@ -45,7 +45,7 @@ public class Phase {
     @OneToMany(mappedBy = "phase", cascade = CascadeType.ALL)
     private List<Livrable> livrables;
 
-    @OneToOne(mappedBy = "phase", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "phase", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Facture facture;
 
     public void removeFacture() {
