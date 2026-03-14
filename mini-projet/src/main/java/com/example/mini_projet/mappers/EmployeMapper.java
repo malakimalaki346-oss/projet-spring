@@ -26,7 +26,7 @@ public class EmployeMapper {
         employe.setTelephone(dto.telephone());
         employe.setEmail(dto.email());
         employe.setLogin(dto.login());
-        employe.setPassword(dto.password()); // Sera hashé dans le service
+        employe.setPassword(dto.password()); 
 
         Profil profil = profilRepository.findById(dto.profilId()).orElse(null);
         employe.setProfil(profil);
@@ -63,7 +63,7 @@ public class EmployeMapper {
         employe.setLogin(dto.login());
 
         if (dto.password() != null && !dto.password().isEmpty()) {
-            employe.setPassword(dto.password()); // Sera hashé dans le service
+            employe.setPassword(dto.password()); 
         }
 
         if (dto.profilId() != null) {

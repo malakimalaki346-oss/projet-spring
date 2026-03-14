@@ -20,7 +20,7 @@ public class JwtTokenProvider {
     @Value("${app.jwt.secret:defaultSecretKeyThatIsLongEnoughForHS512Algorithm}")
     private String jwtSecret;
 
-    @Value("${app.jwt.expiration:86400000}") // 24 heures par défaut
+    @Value("${app.jwt.expiration:86400000}") 
     private int jwtExpirationInMs;
 
     private Key key() {

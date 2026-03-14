@@ -1,6 +1,5 @@
 package com.example.mini_projet.services;
 
-
 import com.example.mini_projet.dto.request.FactureRequestDTO;
 import com.example.mini_projet.dto.response.FactureResponseDTO;
 import com.example.mini_projet.entities.Facture;
@@ -13,7 +12,6 @@ import com.example.mini_projet.repositories.FactureRepository;
 import com.example.mini_projet.repositories.PhaseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,49 +32,50 @@ public class FactureService {
     }
 
     public FactureResponseDTO create(FactureRequestDTO requestDTO) {
-        // Vérifier que la phase existe
+        System.out.println("Création d'une facture...");
+
         Phase phase = phaseRepository.findById(requestDTO.phaseId())
                 .orElseThrow(() -> new ResourceNotFoundException("Phase non trouvée avec l'id: " + requestDTO.phaseId()));
 
-        // Vérifier que la phase est terminée
         if (!phase.isEstTerminee()) {
             throw new ValidationException("Impossible de facturer une phase non terminée");
         }
 
-        // Vérifier que la phase n'a pas déjà une facture
         if (factureRepository.findByPhaseId(requestDTO.phaseId()).isPresent()) {
             throw new DuplicateResourceException("Une facture existe déjà pour cette phase");
         }
 
-        // Vérifier que le numéro de facture est unique
         if (factureRepository.findByNumeroFacture(requestDTO.numeroFacture()).isPresent()) {
             throw new DuplicateResourceException("Numéro de facture déjà utilisé");
         }
 
         Facture facture = factureMapper.toEntity(requestDTO);
         facture.setPhase(phase);
+        Facture savedFacture = factureRepository.save(facture);
 
-        // Marquer la phase comme facturée
         phase.setEstFacturee(true);
         phaseRepository.save(phase);
 
-        Facture saved = factureRepository.save(facture);
-        return factureMapper.toResponseDTO(saved);
+        System.out.println(" Facture créée avec ID: " + savedFacture.getId());
+        return factureMapper.toResponseDTO(savedFacture);
     }
 
     public FactureResponseDTO update(Long id, FactureRequestDTO requestDTO) {
+        System.out.println(" Mise à jour facture ID: " + id);
+
         Facture facture = factureRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Facture non trouvée avec l'id: " + id));
 
-        // Vérifier que le numéro de facture est unique si modifié
         if (!facture.getNumeroFacture().equals(requestDTO.numeroFacture()) &&
                 factureRepository.findByNumeroFacture(requestDTO.numeroFacture()).isPresent()) {
             throw new DuplicateResourceException("Numéro de facture déjà utilisé");
         }
 
         factureMapper.updateEntity(requestDTO, facture);
-        Facture saved = factureRepository.save(facture);
-        return factureMapper.toResponseDTO(saved);
+        Facture savedFacture = factureRepository.save(facture);
+
+        System.out.println(" Facture mise à jour");
+        return factureMapper.toResponseDTO(savedFacture);
     }
 
     public FactureResponseDTO findById(Long id) {
@@ -91,27 +90,49 @@ public class FactureService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void delete(Long id) {
+        System.out.println(" ATTENTION : Méthode delete appelée avec id = " + id);
+
         Facture facture = factureRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Facture non trouvée avec l'id: " + id));
 
-        Phase phase = facture.getPhase();
-        phase.setEstFacturee(false);
-        phaseRepository.save(phase);
+        System.out.println(" Facture trouvée : " + facture.getNumeroFacture());
 
+        Phase phase = facture.getPhase();
+        if (phase != null) {
+            System.out.println("Phase associée ID: " + phase.getId());
+            phase.setEstFacturee(false);
+            phaseRepository.save(phase);
+            System.out.println("Phase mise à jour");
+        }
+
+        System.out.println(" Tentative de suppression...");
         factureRepository.delete(facture);
+        System.out.println(" Suppression exécutée");
+
+        
+        boolean exists = factureRepository.existsById(id);
+        System.out.println(" La facture existe encore ? " + exists);
+
+        
+
     }
 
     public FactureResponseDTO enregistrerPaiement(Long id) {
+        System.out.println(" Enregistrement paiement facture ID: " + id);
+
         Facture facture = factureRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Facture non trouvée avec l'id: " + id));
 
         facture.setDatePaiement(new java.util.Date());
         Phase phase = facture.getPhase();
         phase.setEstPayee(true);
-
         phaseRepository.save(phase);
-        Facture saved = factureRepository.save(facture);
-        return factureMapper.toResponseDTO(saved);
+
+        Facture savedFacture = factureRepository.save(facture);
+
+        System.out.println(" Paiement enregistré");
+        return factureMapper.toResponseDTO(savedFacture);
     }
 }

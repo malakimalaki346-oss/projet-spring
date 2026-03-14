@@ -47,25 +47,25 @@ public class ProjetService {
     }
 
     public ProjetResponseDTO create(ProjetRequestDTO requestDTO) {
-        // Validation du code unique
+        
         if (projetRepository.findByCode(requestDTO.code()).isPresent()) {
             throw new DuplicateResourceException("Code projet déjà utilisé");
         }
 
-        // Validation des dates
+        
         if (requestDTO.dateDebut().after(requestDTO.dateFin())) {
             throw new ValidationException("La date de début doit être antérieure à la date de fin");
         }
 
-        // Vérifier que l'organisme existe
+        
         Organisme organisme = organismeRepository.findById(requestDTO.organismeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Organisme non trouvé avec l'id: " + requestDTO.organismeId()));
 
-        // Vérifier que le chef de projet existe
+        
         Employe chefProjet = employeRepository.findById(requestDTO.chefProjetId())
                 .orElseThrow(() -> new ResourceNotFoundException("Chef de projet non trouvé avec l'id: " + requestDTO.chefProjetId()));
 
-        // Vérifier que l'employé a le bon profil
+        
         if (!chefProjet.getProfil().getCode().equals("CHEF_PROJET") &&
                 !chefProjet.getProfil().getCode().equals("DIRECTEUR")) {
             throw new ValidationException("L'employé doit avoir le profil Chef de Projet ou Directeur");
@@ -83,22 +83,22 @@ public class ProjetService {
         Projet projet = projetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Projet non trouvé avec l'id: " + id));
 
-        // Validation du code unique si modifié
+        
         if (!projet.getCode().equals(requestDTO.code()) &&
                 projetRepository.findByCode(requestDTO.code()).isPresent()) {
             throw new DuplicateResourceException("Code projet déjà utilisé");
         }
 
-        // Validation des dates
+        
         if (requestDTO.dateDebut().after(requestDTO.dateFin())) {
             throw new ValidationException("La date de début doit être antérieure à la date de fin");
         }
 
-        // Vérifier que l'organisme existe
+        
         Organisme organisme = organismeRepository.findById(requestDTO.organismeId())
                 .orElseThrow(() -> new ResourceNotFoundException("Organisme non trouvé avec l'id: " + requestDTO.organismeId()));
 
-        // Vérifier que le chef de projet existe
+        
         Employe chefProjet = employeRepository.findById(requestDTO.chefProjetId())
                 .orElseThrow(() -> new ResourceNotFoundException("Chef de projet non trouvé avec l'id: " + requestDTO.chefProjetId()));
 
@@ -149,7 +149,7 @@ public class ProjetService {
         Projet projet = projetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Projet non trouvé avec l'id: " + id));
 
-        // Vérifier s'il a des phases
+        
         if (projet.getPhases() != null && !projet.getPhases().isEmpty()) {
             throw new ValidationException("Impossible de supprimer: le projet a des phases associées");
         }
