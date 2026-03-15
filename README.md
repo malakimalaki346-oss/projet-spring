@@ -1,8 +1,8 @@
-🚀 API de Suivi de Projets (Mini-Projet) :
+# 🚀 API de Suivi de Projets (Mini-Projet) :
 
 Cette application est une API REST développée avec Spring Boot, conçue pour la gestion complète de projets, incluant le suivi des phases, des employés, des livrables et de la facturation. Elle intègre une sécurité basée sur JWT et une documentation interactive avec Swagger.
 
-📋 Fonctionnalités :
+# 📋 Fonctionnalités :
 
 Le projet est divisé en plusieurs modules de gestion :
 
@@ -18,7 +18,7 @@ Reporting & Statistiques : Consultation de tableaux de bord sur l'état des proj
 
 Sécurité : Authentification et autorisation via JSON Web Token (JWT).
 
-🏗️ Architecture Technique :
+# 🏗️ Architecture Technique :
 
 L'application suit une architecture N-Tier (multi-couches) pour assurer la maintenabilité et l'évolutivité :
 
@@ -34,7 +34,7 @@ DTOs & Mappers : Transfert de données sécurisé et conversion entre entités e
 
 Security : Configuration JWT et gestion des accès.
 
-🛠️ Technologies Utilisées :
+# 🛠️ Technologies Utilisées :
 
 Backend : Java 17+, Spring Boot 3.x
 
