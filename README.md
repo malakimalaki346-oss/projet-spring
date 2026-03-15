@@ -45,3 +45,4 @@ Base de données : MySQL / PostgreSQL (via JPA/Hibernate)
 Documentation : Swagger UI / OpenAPI 3
 
 Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
+
