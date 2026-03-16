@@ -36,7 +36,7 @@ Security : Configuration JWT et gestion des accès.
 
 # 🛠️ Technologies Utilisées :
 
-Backend : Java 17+, Spring Boot 3.x
+Backend : Java 21, Spring Boot 3.x
 
 Sécurité : Spring Security, JWT
 
