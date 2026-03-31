@@ -17,7 +17,7 @@ public class Document {
     private Long id;
 
     private String code;
-    private String type; // "CDC", "SPEC", "ARCHI", "CR", etc.
+    private String type; 
     private String titre;
     private String description;
     private String cheminFichier;

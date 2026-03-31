@@ -36,7 +36,7 @@ public class LivrableService {
         Phase phase = phaseRepository.findById(phaseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Phase non trouvée avec l'id: " + phaseId));
 
-        // Vérifier unicité du code
+        
         if (livrableRepository.findByCode(requestDTO.code()).isPresent()) {
             throw new DuplicateResourceException("Code livrable déjà utilisé");
         }
@@ -52,7 +52,7 @@ public class LivrableService {
         Livrable livrable = livrableRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Livrable non trouvé avec l'id: " + id));
 
-        // Vérifier unicité du code si modifié
+        
         if (!livrable.getCode().equals(requestDTO.code()) &&
                 livrableRepository.findByCode(requestDTO.code()).isPresent()) {
             throw new DuplicateResourceException("Code livrable déjà utilisé");

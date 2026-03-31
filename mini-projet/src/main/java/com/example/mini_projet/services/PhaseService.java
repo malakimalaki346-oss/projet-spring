@@ -36,16 +36,16 @@ public class PhaseService {
         Projet projet = projetRepository.findById(projetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Projet non trouvé avec l'id: " + projetId));
 
-        // Validation: dates de la phase dans l'intervalle du projet
+        
         if (requestDTO.dateDebut().before(projet.getDateDebut()) ||
                 requestDTO.dateFin().after(projet.getDateFin())) {
             throw new ValidationException("Les dates de la phase doivent être comprises dans les dates du projet");
         }
 
-        // Calcul du montant de la phase
+        
         Double montantPhase = (requestDTO.pourcentage() / 100.0) * projet.getMontantGlobal();
 
-        // Vérifier que le montant total des phases ne dépasse pas le montant du projet
+        
         Double montantTotalPhases = calculerMontantTotalPhases(projet);
         if (montantTotalPhases + montantPhase > projet.getMontantGlobal()) {
             throw new ValidationException("Le montant total des phases ne peut pas dépasser le montant du projet");
@@ -65,16 +65,16 @@ public class PhaseService {
 
         Projet projet = phase.getProjet();
 
-        // Validation: dates de la phase dans l'intervalle du projet
+        
         if (requestDTO.dateDebut().before(projet.getDateDebut()) ||
                 requestDTO.dateFin().after(projet.getDateFin())) {
             throw new ValidationException("Les dates de la phase doivent être comprises dans les dates du projet");
         }
 
-        // Recalcul du montant
+        
         Double nouveauMontant = (requestDTO.pourcentage() / 100.0) * projet.getMontantGlobal();
 
-        // Vérifier le montant total (sans compter l'ancien montant de cette phase)
+        
         Double montantAutresPhases = phaseRepository.sumMontantPhasesByProjet(projet.getId()) - phase.getMontant();
         if (montantAutresPhases + nouveauMontant > projet.getMontantGlobal()) {
             throw new ValidationException("Le montant total des phases ne peut pas dépasser le montant du projet");
@@ -130,7 +130,7 @@ public class PhaseService {
         Phase phase = phaseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Phase non trouvée avec l'id: " + id));
 
-        // Vérifier s'il y a des affectations ou livrables
+        
         if (phase.getAffectations() != null && !phase.getAffectations().isEmpty()) {
             throw new ValidationException("Impossible de supprimer: la phase a des employés affectés");
         }

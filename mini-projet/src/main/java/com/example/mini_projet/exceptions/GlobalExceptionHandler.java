@@ -20,9 +20,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ============================================
-    // GESTION DES EXCEPTIONS PERSONNALISÉES
-    // ============================================
+    
+    
+    
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException ex) {
@@ -64,9 +64,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
-    // ============================================
-    // GESTION DES EXCEPTIONS DE SÉCURITÉ
-    // ============================================
+    
+    
+    
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
@@ -98,9 +98,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    // ============================================
-    // GESTION DES EXCEPTIONS DE VALIDATION
-    // ============================================
+    
+    
+    
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -120,9 +120,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // ============================================
-    // GESTION DES EXCEPTIONS DE TYPE D'ARGUMENT
-    // ============================================
+    
+    
+    
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
@@ -147,9 +147,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    // ============================================
-    // GESTION DES EXCEPTIONS DE NULL POINTER
-    // ============================================
+    
+    
+    
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<ErrorResponse> handleNullPointerException(NullPointerException ex) {
@@ -161,13 +161,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // ============================================
-    // GESTION DES EXCEPTIONS GÉNÉRIQUES
-    // ============================================
+    
+    
+    
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-        // Log l'erreur pour le débogage
+        
         ex.printStackTrace();
 
         ErrorResponse errorResponse = new ErrorResponse(
@@ -178,9 +178,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // ============================================
-    // CLASSE INTERNE POUR LA RÉPONSE D'ERREUR
-    // ============================================
+    
+    
+    
 
     public static class ErrorResponse {
         private int status;
@@ -193,7 +193,7 @@ public class GlobalExceptionHandler {
             this.timestamp = timestamp;
         }
 
-        // Getters
+        
         public int getStatus() {
             return status;
         }
@@ -206,7 +206,7 @@ public class GlobalExceptionHandler {
             return timestamp;
         }
 
-        // Setters
+        
         public void setStatus(int status) {
             this.status = status;
         }

@@ -30,7 +30,7 @@ public class OrganismeService {
     }
 
     public OrganismeResponseDTO create(OrganismeRequestDTO requestDTO) {
-        // Vérifier unicité du code
+        
         if (organismeRepository.existsByCode(requestDTO.code())) {
             throw new DuplicateResourceException("Code déjà utilisé");
         }
@@ -44,7 +44,7 @@ public class OrganismeService {
         Organisme organisme = organismeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Organisme non trouvé avec l'id: " + id));
 
-        // Vérifier unicité du code si modifié
+        
         if (!organisme.getCode().equals(requestDTO.code()) &&
                 organismeRepository.existsByCode(requestDTO.code())) {
             throw new DuplicateResourceException("Code déjà utilisé");
@@ -82,7 +82,7 @@ public class OrganismeService {
         Organisme organisme = organismeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Organisme non trouvé avec l'id: " + id));
 
-        // Vérifier s'il a des projets
+        
         if (organisme.getProjets() != null && !organisme.getProjets().isEmpty()) {
             throw new ResourceInUseException("Impossible de supprimer: l'organisme a des projets associés");
         }

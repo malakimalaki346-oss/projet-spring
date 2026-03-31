@@ -30,7 +30,7 @@ public class Phase {
     private Double pourcentage;
     private Double montant;
 
-    // États
+    
     private boolean estTerminee = false;
     private boolean estFacturee = false;
     private boolean estPayee = false;
@@ -45,8 +45,13 @@ public class Phase {
     @OneToMany(mappedBy = "phase", cascade = CascadeType.ALL)
     private List<Livrable> livrables;
 
-    @OneToOne(mappedBy = "phase")
+    @OneToOne(mappedBy = "phase", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Facture facture;
+
+    public void removeFacture() {
+        this.facture = null;
+        this.estFacturee = false;
+    }
 
     public Long getId() {
         return id;

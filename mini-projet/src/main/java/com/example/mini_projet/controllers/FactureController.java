@@ -62,6 +62,7 @@ public class FactureController {
     @PreAuthorize("hasRole('COMPTABLE')")
     @Operation(summary = "Supprimer une facture")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
+        System.out.println(" Contrôleur DELETE appelé avec id = " + id);
         factureService.delete(id);
         return ResponseEntity.noContent().build();
     }
