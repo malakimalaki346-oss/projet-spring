@@ -3,6 +3,7 @@ package com.example.mini_projet.config;
 import com.example.mini_projet.entities.*;
 import com.example.mini_projet.repositories.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,23 +17,25 @@ public class DataInitializer implements CommandLineRunner {
     private final OrganismeRepository organismeRepository;
     private final ProjetRepository projetRepository;
     private final PhaseRepository phaseRepository;
+    private final PasswordEncoder passwordEncoder;  
 
-    
     public DataInitializer(ProfilRepository profilRepository,
                            EmployeRepository employeRepository,
                            OrganismeRepository organismeRepository,
                            ProjetRepository projetRepository,
-                           PhaseRepository phaseRepository) {
+                           PhaseRepository phaseRepository,
+                           PasswordEncoder passwordEncoder) {  
         this.profilRepository = profilRepository;
         this.employeRepository = employeRepository;
         this.organismeRepository = organismeRepository;
         this.projetRepository = projetRepository;
         this.phaseRepository = phaseRepository;
+        this.passwordEncoder = passwordEncoder;  
     }
 
     @Override
     @Transactional
-    public void run(String... args) {  
+    public void run(String... args) {
         System.out.println("=== INITIALISATION DES DONNÉES DE TEST ===");
 
         createProfils();
@@ -46,7 +49,6 @@ public class DataInitializer implements CommandLineRunner {
         if (profilRepository.count() == 0) {
             System.out.println("Création des profils...");
 
-            
             profilRepository.save(new Profil("ADMIN", "Administrateur", "Gestion des utilisateurs"));
             profilRepository.save(new Profil("DIRECTEUR", "Directeur", "Gestion complète des projets"));
             profilRepository.save(new Profil("CHEF_PROJET", "Chef de Projet", "Gestion des phases et affectations"));
@@ -54,7 +56,7 @@ public class DataInitializer implements CommandLineRunner {
             profilRepository.save(new Profil("SECRETAIRE", "Secrétaire", "Gestion administrative"));
             profilRepository.save(new Profil("TECHNICIEN", "Technicien", "Exécution des tâches"));
 
-            System.out.println("✅ Profils créés");
+            System.out.println(" Profils créés");
         }
     }
 
@@ -70,12 +72,13 @@ public class DataInitializer implements CommandLineRunner {
             admin.setPrenom("System");
             admin.setEmail("admin@toubkalit.ma");
             admin.setLogin("admin");
-            admin.setPassword("admin123");  
+            
+            admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setTelephone("0600000000");
             admin.setProfil(adminProfil);
 
             employeRepository.save(admin);
-            System.out.println("✅ Admin créé (login: admin, password: admin123)");
+            System.out.println(" Admin créé (login: admin, password: admin123)");
         }
     }
 
@@ -96,11 +99,12 @@ public class DataInitializer implements CommandLineRunner {
             Profil chefProfil = profilRepository.findByCode("CHEF_PROJET").orElseThrow();
             Employe chef = new Employe();
             chef.setMatricule("CP001");
-            chef.setNom("Alaoui");  
+            chef.setNom("Alaoui");
             chef.setPrenom("Mohamed");
             chef.setEmail("m.alaoui@toubkalit.ma");
             chef.setLogin("chef");
-            chef.setPassword("chef123");
+            
+            chef.setPassword(passwordEncoder.encode("chef123"));
             chef.setTelephone("0612345678");
             chef.setProfil(chefProfil);
             employeRepository.save(chef);
@@ -130,7 +134,7 @@ public class DataInitializer implements CommandLineRunner {
             phase1.setProjet(projet);
             phaseRepository.save(phase1);
 
-            System.out.println("✅ Données de test créées");
+            System.out.println(" Données de test créées");
         }
     }
 }

@@ -13,6 +13,7 @@ import com.example.mini_projet.repositories.EmployeRepository;
 import com.example.mini_projet.repositories.ProfilRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;  
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,22 +27,25 @@ public class EmployeService {
 
     private final EmployeRepository employeRepository;
     private final ProfilRepository profilRepository;
-    private final AffectationRepository affectationRepository;  // ⬅️ AJOUTER cette dépendance
+    private final AffectationRepository affectationRepository;
     private final EmployeMapper employeMapper;
+    private final PasswordEncoder passwordEncoder;  
 
-    // ✅ CONSTRUCTEUR MIS À JOUR avec AffectationRepository
+    
     public EmployeService(EmployeRepository employeRepository,
                           ProfilRepository profilRepository,
-                          AffectationRepository affectationRepository,  // ⬅️ AJOUTER ce paramètre
-                          EmployeMapper employeMapper) {
+                          AffectationRepository affectationRepository,
+                          EmployeMapper employeMapper,
+                          PasswordEncoder passwordEncoder) {  
         this.employeRepository = employeRepository;
         this.profilRepository = profilRepository;
-        this.affectationRepository = affectationRepository;  // ⬅️ AJOUTER cette ligne
+        this.affectationRepository = affectationRepository;
         this.employeMapper = employeMapper;
+        this.passwordEncoder = passwordEncoder;  
     }
 
     public EmployeResponseDTO create(EmployeRequestDTO requestDTO) {
-        // Vérifications d'unicité
+        
         if (employeRepository.existsByMatricule(requestDTO.matricule())) {
             throw new DuplicateResourceException("Matricule déjà utilisé");
         }
@@ -52,12 +56,15 @@ public class EmployeService {
             throw new DuplicateResourceException("Email déjà utilisé");
         }
 
-        // Vérifier que le profil existe
+        
         Profil profil = profilRepository.findById(requestDTO.profilId())
                 .orElseThrow(() -> new ResourceNotFoundException("Profil non trouvé avec l'id: " + requestDTO.profilId()));
 
         Employe employe = employeMapper.toEntity(requestDTO);
-        employe.setPassword(requestDTO.password());
+
+        
+        employe.setPassword(passwordEncoder.encode(requestDTO.password()));
+
         employe.setProfil(profil);
 
         Employe saved = employeRepository.save(employe);
@@ -68,7 +75,7 @@ public class EmployeService {
         Employe employe = employeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employé non trouvé avec l'id: " + id));
 
-        // Vérifications d'unicité si modifiés
+        
         if (!employe.getMatricule().equals(requestDTO.matricule()) &&
                 employeRepository.existsByMatricule(requestDTO.matricule())) {
             throw new DuplicateResourceException("Matricule déjà utilisé");
@@ -82,14 +89,15 @@ public class EmployeService {
             throw new DuplicateResourceException("Email déjà utilisé");
         }
 
-        // Vérifier que le profil existe
+        
         Profil profil = profilRepository.findById(requestDTO.profilId())
                 .orElseThrow(() -> new ResourceNotFoundException("Profil non trouvé avec l'id: " + requestDTO.profilId()));
 
         employeMapper.updateEntity(requestDTO, employe);
 
+        
         if (requestDTO.password() != null && !requestDTO.password().isEmpty()) {
-            employe.setPassword(requestDTO.password());
+            employe.setPassword(passwordEncoder.encode(requestDTO.password()));
         }
 
         employe.setProfil(profil);
@@ -121,12 +129,10 @@ public class EmployeService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ NOUVELLE MÉTHODE 1 : Vérifier si un employé est disponible sur une période
     public boolean estDisponibleSurPeriode(Long employeId, Date dateDebut, Date dateFin) {
         return !affectationRepository.estEmployeOccupeSurPeriode(employeId, dateDebut, dateFin);
     }
 
-    // ✅ NOUVELLE MÉTHODE 2 : Trouver tous les employés disponibles sur une période
     public List<EmployeResponseDTO> findEmployesDisponibles(Date dateDebut, Date dateFin) {
         return employeRepository.findAll().stream()
                 .filter(employe -> estDisponibleSurPeriode(employe.getId(), dateDebut, dateFin))
@@ -134,7 +140,6 @@ public class EmployeService {
                 .collect(Collectors.toList());
     }
 
-    // ✅ NOUVELLE MÉTHODE 3 : Trouver les employés disponibles par profil
     public List<EmployeResponseDTO> findEmployesDisponiblesParProfil(String profilCode, Date dateDebut, Date dateFin) {
         return employeRepository.findByProfilCode(profilCode).stream()
                 .filter(employe -> estDisponibleSurPeriode(employe.getId(), dateDebut, dateFin))
@@ -146,12 +151,10 @@ public class EmployeService {
         Employe employe = employeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employé non trouvé avec l'id: " + id));
 
-        // Vérifier s'il a des projets dirigés
         if (employe.getProjetsDiriges() != null && !employe.getProjetsDiriges().isEmpty()) {
             throw new ResourceInUseException("Impossible de supprimer: l'employé dirige des projets");
         }
 
-        // Vérifier s'il a des affectations
         if (employe.getAffectations() != null && !employe.getAffectations().isEmpty()) {
             throw new ResourceInUseException("Impossible de supprimer: l'employé a des affectations en cours");
         }
