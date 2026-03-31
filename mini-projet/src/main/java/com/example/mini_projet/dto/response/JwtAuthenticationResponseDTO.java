@@ -21,11 +21,7 @@ public class JwtAuthenticationResponseDTO {
         this.role = role;
     }
 
-<<<<<<< HEAD
-    // Getters et Setters
-=======
-    
->>>>>>> 42ef670434ec9dd3f5f285f53aab186826572af0
+
     public String getAccessToken() { return accessToken; }
     public void setAccessToken(String accessToken) { this.accessToken = accessToken; }
     public String getTokenType() { return tokenType; }

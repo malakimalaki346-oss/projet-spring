@@ -22,11 +22,7 @@ public class UserInfoResponseDTO {
         this.roleLibelle = roleLibelle;
     }
 
-<<<<<<< HEAD
-    // Getters et Setters
-=======
-    
->>>>>>> 42ef670434ec9dd3f5f285f53aab186826572af0
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getLogin() { return login; }

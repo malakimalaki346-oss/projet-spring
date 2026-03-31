@@ -15,11 +15,7 @@ public class ChangePasswordRequestDTO {
     @NotBlank(message = "La confirmation est obligatoire")
     private String confirmPassword;
 
-<<<<<<< HEAD
-    // Getters et Setters
-=======
-    
->>>>>>> 42ef670434ec9dd3f5f285f53aab186826572af0
+
     public String getOldPassword() { return oldPassword; }
     public void setOldPassword(String oldPassword) { this.oldPassword = oldPassword; }
     public String getNewPassword() { return newPassword; }
