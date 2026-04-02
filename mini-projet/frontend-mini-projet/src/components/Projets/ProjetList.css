@@ -1,0 +1,59 @@
+.projet-list {
+    padding: 20px;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-add {
+    background: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.search-bar {
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-view, .btn-edit, .btn-delete {
+    padding: 5px 10px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-view {
+    background: #3498db;
+    color: white;
+}
+
+.btn-edit {
+    background: #f39c12;
+    color: white;
+}
+
+.btn-delete {
+    background: #e74c3c;
+    color: white;
+}
