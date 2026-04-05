@@ -118,8 +118,8 @@ Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
 ### Étapes d'installation
 
 ```bash
-git clone https://github.com/votre-username/suiviprojet.git
-cd suiviprojet
+git clone https://github.com/malakimalaki346-oss/projet-spring.git
+cd projet-spring
 
 
 
