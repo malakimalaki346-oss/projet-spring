@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const RoleRoute = ({ children, allowedRoles }) => {
-    const { isAuthenticated, user, hasRole, loading } = useAuth();
+    const { isAuthenticated, hasRole, loading } = useAuth();
 
     if (loading) {
         return <div style={{textAlign: 'center', padding: '50px'}}>Chargement...</div>;

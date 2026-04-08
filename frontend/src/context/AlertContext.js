@@ -10,19 +10,17 @@ export const AlertProvider = ({ children }) => {
     const addAlert = (type, message, duration = 3000) => {
         const id = Date.now();
         setAlerts(prev => [...prev, { id, type, message, duration }]);
-        setTimeout(() => {
-            removeAlert(id);
-        }, duration);
+        setTimeout(() => removeAlert(id), duration);
     };
 
     const removeAlert = (id) => {
         setAlerts(prev => prev.filter(alert => alert.id !== id));
     };
 
-    const success = (message, duration) => addAlert('success', message, duration);
-    const error = (message, duration) => addAlert('error', message, duration);
-    const warning = (message, duration) => addAlert('warning', message, duration);
-    const info = (message, duration) => addAlert('info', message, duration);
+    const success = (msg) => addAlert('success', msg);
+    const error = (msg) => addAlert('error', msg);
+    const warning = (msg) => addAlert('warning', msg);
+    const info = (msg) => addAlert('info', msg);
 
     return (
         <AlertContext.Provider value={{ alerts, success, error, warning, info, removeAlert }}>

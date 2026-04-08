@@ -7,10 +7,7 @@ const Footer = () => {
             color: 'white',
             textAlign: 'center',
             padding: '15px',
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
+            marginTop: '30px',
             fontSize: '12px'
         }}>
             <p>&copy; 2026 - Systeme de Suivi de Projets - Tous droits reserves</p>
