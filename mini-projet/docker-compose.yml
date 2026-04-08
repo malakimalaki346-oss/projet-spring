@@ -1,0 +1,59 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: suiviprojet-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: suiviprojet_db
+      MYSQL_USER: springuser
+      MYSQL_PASSWORD: springpassword
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - suiviprojet-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  backend:
+    build: ./backend
+    container_name: suiviprojet-backend
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/suiviprojet_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: springuser
+      SPRING_DATASOURCE_PASSWORD: springpassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: true
+      APP_JWT_SECRET: maCleSecreteTresLongueEtSecuriseePourHS512AlgorithmSur256BitsMinimum
+      APP_JWT_EXPIRATION: 86400000
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+    networks:
+      - suiviprojet-network
+
+  frontend:
+    build: ./frontend
+    container_name: suiviprojet-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    networks:
+      - suiviprojet-network
+
+volumes:
+  mysql-data:
+
+networks:
+  suiviprojet-network:
+    driver: bridge
