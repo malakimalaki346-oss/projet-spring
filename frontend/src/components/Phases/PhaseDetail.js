@@ -11,33 +11,116 @@ const PhaseDetail = () => {
     const [error, setError] = useState(null);
     const [affectations, setAffectations] = useState([]);
     const [livrables, setLivrables] = useState([]);
+    const [showAffectationForm, setShowAffectationForm] = useState(false);
+    const [showLivrableForm, setShowLivrableForm] = useState(false);
+    const [employes, setEmployes] = useState([]);
+    const [newAffectation, setNewAffectation] = useState({
+        employeId: '',
+        dateDebut: '',
+        dateFin: '',
+        role: ''
+    });
+    const [newLivrable, setNewLivrable] = useState({
+        code: '',
+        libelle: '',
+        description: '',
+        cheminFichier: ''
+    });
     const { hasRole } = useAuth();
 
     useEffect(() => {
         loadPhaseData();
+        loadEmployes();
     }, [id]);
 
     const loadPhaseData = async () => {
         try {
-            console.log('Chargement phase ID:', id);
-
             const phaseResponse = await api.get(`/phases/${id}`);
-            console.log('Phase:', phaseResponse.data);
             setPhase(phaseResponse.data);
 
             const affectationsResponse = await api.get(`/phases/${id}/employes`);
-            console.log('Affectations:', affectationsResponse.data);
             setAffectations(affectationsResponse.data || []);
 
             const livrablesResponse = await api.get(`/phases/${id}/livrables`);
-            console.log('Livrables:', livrablesResponse.data);
             setLivrables(livrablesResponse.data || []);
-
         } catch (error) {
             console.error('Erreur:', error);
             setError(error.response?.data?.message || 'Erreur de chargement');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const loadEmployes = async () => {
+        try {
+            const response = await api.get('/employes');
+            setEmployes(response.data || []);
+        } catch (error) {
+            console.error('Erreur chargement employes:', error);
+        }
+    };
+
+    const handleAffectationChange = (e) => {
+        setNewAffectation({
+            ...newAffectation,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleLivrableChange = (e) => {
+        setNewLivrable({
+            ...newLivrable,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const addAffectation = async (e) => {
+        e.preventDefault();
+        try {
+            await api.post(`/phases/${id}/employes/${newAffectation.employeId}`, {
+                dateDebut: newAffectation.dateDebut,
+                dateFin: newAffectation.dateFin,
+                role: newAffectation.role
+            });
+            setShowAffectationForm(false);
+            setNewAffectation({ employeId: '', dateDebut: '', dateFin: '', role: '' });
+            loadPhaseData();
+        } catch (error) {
+            alert(error.response?.data?.message || 'Erreur');
+        }
+    };
+
+    const addLivrable = async (e) => {
+        e.preventDefault();
+        try {
+            await api.post(`/phases/${id}/livrables`, newLivrable);
+            setShowLivrableForm(false);
+            setNewLivrable({ code: '', libelle: '', description: '', cheminFichier: '' });
+            loadPhaseData();
+        } catch (error) {
+            alert(error.response?.data?.message || 'Erreur');
+        }
+    };
+
+    const deleteAffectation = async (employeId) => {
+        if (window.confirm('Supprimer cette affectation ?')) {
+            try {
+                await api.delete(`/phases/${id}/employes/${employeId}`);
+                loadPhaseData();
+            } catch (error) {
+                alert(error.response?.data?.message || 'Erreur');
+            }
+        }
+    };
+
+    const deleteLivrable = async (livrableId) => {
+        if (window.confirm('Supprimer ce livrable ?')) {
+            try {
+                await api.delete(`/livrables/${livrableId}`);
+                loadPhaseData();
+            } catch (error) {
+                alert(error.response?.data?.message || 'Erreur');
+            }
         }
     };
 
@@ -74,6 +157,8 @@ const PhaseDetail = () => {
     if (error) return <div style={{textAlign: 'center', padding: '50px', color: 'red'}}>Erreur: {error}</div>;
     if (!phase) return <div style={{textAlign: 'center', padding: '50px'}}>Phase non trouvee</div>;
 
+    const canManage = hasRole('CHEF_PROJET') || hasRole('DIRECTEUR') || hasRole('ADMIN');
+
     return (
         <div style={{padding: '20px'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
@@ -85,7 +170,7 @@ const PhaseDetail = () => {
                     >
                         Retour au projet
                     </button>
-                    {(hasRole('CHEF_PROJET') || hasRole('DIRECTEUR') || hasRole('ADMIN')) && (
+                    {canManage && (
                         <button
                             onClick={() => navigate(`/phases/edit/${id}`)}
                             style={{background: '#f39c12', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}
@@ -96,6 +181,7 @@ const PhaseDetail = () => {
                 </div>
             </div>
 
+            {/* Informations generales - identique */}
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
                 <h3>Informations generales</h3>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginTop: '15px'}}>
@@ -114,47 +200,77 @@ const PhaseDetail = () => {
                 )}
             </div>
 
+            {/* Etat de la phase - identique */}
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
                 <h3>Etat de la phase</h3>
                 <div style={{display: 'flex', gap: '30px', marginTop: '15px'}}>
                     <div>
                         <label style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <input
-                                type="checkbox"
-                                checked={phase.estTerminee || false}
-                                onChange={(e) => updateEtat('realisation', e.target.checked)}
-                                disabled={!hasRole('CHEF_PROJET') && !hasRole('DIRECTEUR') && !hasRole('ADMIN')}
-                            />
+                            <input type="checkbox" checked={phase.estTerminee || false} onChange={(e) => updateEtat('realisation', e.target.checked)} disabled={!hasRole('CHEF_PROJET') && !hasRole('DIRECTEUR') && !hasRole('ADMIN')} />
                             <strong>Terminee</strong>
                         </label>
                     </div>
                     <div>
                         <label style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <input
-                                type="checkbox"
-                                checked={phase.estFacturee || false}
-                                onChange={(e) => updateEtat('facturation', e.target.checked)}
-                                disabled={!hasRole('COMPTABLE') && !hasRole('ADMIN')}
-                            />
+                            <input type="checkbox" checked={phase.estFacturee || false} onChange={(e) => updateEtat('facturation', e.target.checked)} disabled={!hasRole('COMPTABLE') && !hasRole('ADMIN')} />
                             <strong>Facturee</strong>
                         </label>
                     </div>
                     <div>
                         <label style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
-                            <input
-                                type="checkbox"
-                                checked={phase.estPayee || false}
-                                onChange={(e) => updateEtat('paiement', e.target.checked)}
-                                disabled={!hasRole('COMPTABLE') && !hasRole('ADMIN')}
-                            />
+                            <input type="checkbox" checked={phase.estPayee || false} onChange={(e) => updateEtat('paiement', e.target.checked)} disabled={!hasRole('COMPTABLE') && !hasRole('ADMIN')} />
                             <strong>Payee</strong>
                         </label>
                     </div>
                 </div>
             </div>
 
+            {/* Section Employes affectes avec bouton Ajouter */}
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
-                <h3>Employes affectes ({affectations.length})</h3>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
+                    <h3>Employes affectes ({affectations.length})</h3>
+                    {canManage && (
+                        <button onClick={() => setShowAffectationForm(!showAffectationForm)} style={{background: '#28a745', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>
+                            + Ajouter affectation
+                        </button>
+                    )}
+                </div>
+
+                {showAffectationForm && (
+                    <div style={{background: '#f8f9fa', padding: '15px', borderRadius: '5px', marginBottom: '15px'}}>
+                        <h4>Nouvelle affectation</h4>
+                        <form onSubmit={addAffectation}>
+                            <div style={{marginBottom: '10px'}}>
+                                <label>Employe</label>
+                                <select name="employeId" value={newAffectation.employeId} onChange={handleAffectationChange} required style={{width: '100%', padding: '8px', marginTop: '5px'}}>
+                                    <option value="">Selectionner</option>
+                                    {employes.map(emp => (
+                                        <option key={emp.id} value={emp.id}>{emp.prenom} {emp.nom} ({emp.matricule})</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px'}}>
+                                <div>
+                                    <label>Date debut</label>
+                                    <input type="date" name="dateDebut" value={newAffectation.dateDebut} onChange={handleAffectationChange} required style={{width: '100%', padding: '8px'}} />
+                                </div>
+                                <div>
+                                    <label>Date fin</label>
+                                    <input type="date" name="dateFin" value={newAffectation.dateFin} onChange={handleAffectationChange} required style={{width: '100%', padding: '8px'}} />
+                                </div>
+                            </div>
+                            <div style={{marginBottom: '10px'}}>
+                                <label>Role</label>
+                                <input type="text" name="role" value={newAffectation.role} onChange={handleAffectationChange} style={{width: '100%', padding: '8px'}} />
+                            </div>
+                            <div style={{display: 'flex', gap: '10px'}}>
+                                <button type="submit" style={{background: '#3498db', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>Ajouter</button>
+                                <button type="button" onClick={() => setShowAffectationForm(false)} style={{background: '#6c757d', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>Annuler</button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+
                 {affectations.length === 0 ? (
                     <div style={{textAlign: 'center', padding: '30px', color: '#999'}}>Aucun employe affecte</div>
                 ) : (
@@ -165,17 +281,21 @@ const PhaseDetail = () => {
                             <th style={{padding: '12px', textAlign: 'left'}}>Role</th>
                             <th style={{padding: '12px', textAlign: 'left'}}>Date debut</th>
                             <th style={{padding: '12px', textAlign: 'left'}}>Date fin</th>
+                            {canManage && <th style={{padding: '12px', textAlign: 'left'}}>Actions</th>}
                         </tr>
                         </thead>
                         <tbody>
                         {affectations.map(aff => (
                             <tr key={aff.employeId}>
-                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
-                                    {aff.employePrenom} {aff.employeNom} ({aff.employeMatricule})
-                                </td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{aff.employePrenom} {aff.employeNom} ({aff.employeMatricule})</td>
                                 <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{aff.role || '-'}</td>
                                 <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(aff.dateDebut)}</td>
                                 <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(aff.dateFin)}</td>
+                                {canManage && (
+                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
+                                        <button onClick={() => deleteAffectation(aff.employeId)} style={{background: '#e74c3c', color: 'white', padding: '5px 10px', border: 'none', borderRadius: '3px', cursor: 'pointer'}}>Supprimer</button>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                         </tbody>
@@ -183,8 +303,41 @@ const PhaseDetail = () => {
                 )}
             </div>
 
+            {/* Section Livrables avec bouton Ajouter */}
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)'}}>
-                <h3>Livrables ({livrables.length})</h3>
+                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
+                    <h3>Livrables ({livrables.length})</h3>
+                    {canManage && (
+                        <button onClick={() => setShowLivrableForm(!showLivrableForm)} style={{background: '#28a745', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>
+                            + Ajouter livrable
+                        </button>
+                    )}
+                </div>
+
+                {showLivrableForm && (
+                    <div style={{background: '#f8f9fa', padding: '15px', borderRadius: '5px', marginBottom: '15px'}}>
+                        <h4>Nouveau livrable</h4>
+                        <form onSubmit={addLivrable}>
+                            <div style={{marginBottom: '10px'}}>
+                                <label>Code</label>
+                                <input type="text" name="code" value={newLivrable.code} onChange={handleLivrableChange} required style={{width: '100%', padding: '8px'}} />
+                            </div>
+                            <div style={{marginBottom: '10px'}}>
+                                <label>Libelle</label>
+                                <input type="text" name="libelle" value={newLivrable.libelle} onChange={handleLivrableChange} required style={{width: '100%', padding: '8px'}} />
+                            </div>
+                            <div style={{marginBottom: '10px'}}>
+                                <label>Description</label>
+                                <textarea name="description" value={newLivrable.description} onChange={handleLivrableChange} rows="2" style={{width: '100%', padding: '8px'}} />
+                            </div>
+                            <div style={{display: 'flex', gap: '10px'}}>
+                                <button type="submit" style={{background: '#3498db', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>Ajouter</button>
+                                <button type="button" onClick={() => setShowLivrableForm(false)} style={{background: '#6c757d', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}>Annuler</button>
+                            </div>
+                        </form>
+                    </div>
+                )}
+
                 {livrables.length === 0 ? (
                     <div style={{textAlign: 'center', padding: '30px', color: '#999'}}>Aucun livrable</div>
                 ) : (
@@ -194,6 +347,7 @@ const PhaseDetail = () => {
                             <th style={{padding: '12px', textAlign: 'left'}}>Code</th>
                             <th style={{padding: '12px', textAlign: 'left'}}>Libelle</th>
                             <th style={{padding: '12px', textAlign: 'left'}}>Description</th>
+                            {canManage && <th style={{padding: '12px', textAlign: 'left'}}>Actions</th>}
                         </tr>
                         </thead>
                         <tbody>
@@ -202,6 +356,11 @@ const PhaseDetail = () => {
                                 <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.code || '-'}</td>
                                 <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.libelle || '-'}</td>
                                 <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.description || '-'}</td>
+                                {canManage && (
+                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
+                                        <button onClick={() => deleteLivrable(liv.id)} style={{background: '#e74c3c', color: 'white', padding: '5px 10px', border: 'none', borderRadius: '3px', cursor: 'pointer'}}>Supprimer</button>
+                                    </td>
+                                )}
                             </tr>
                         ))}
                         </tbody>
