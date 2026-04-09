@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,18 +28,29 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
-    @PostMapping("/projets/{projetId}/documents")
-    @PreAuthorize("hasAnyRole('SECRETAIRE', 'CHEF_PROJET', 'DIRECTEUR')")
+    @PostMapping(value = "/projets/{projetId}/documents", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyRole('SECRETAIRE', 'CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Ajouter un document à un projet")
     public ResponseEntity<DocumentResponseDTO> create(
             @PathVariable Long projetId,
-            @Valid @RequestBody DocumentRequestDTO requestDTO) {
-        DocumentResponseDTO response = documentService.create(projetId, requestDTO);
+            @RequestParam("code") String code,
+            @RequestParam("type") String type,
+            @RequestParam("titre") String titre,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "fichier", required = false) MultipartFile fichier) {
+
+        DocumentRequestDTO requestDTO = new DocumentRequestDTO();
+        requestDTO.setCode(code);
+        requestDTO.setType(type);
+        requestDTO.setTitre(titre);
+        requestDTO.setDescription(description);
+
+        DocumentResponseDTO response = documentService.create(projetId, requestDTO, fichier);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/documents/{id}")
-    @PreAuthorize("hasAnyRole('SECRETAIRE', 'CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('SECRETAIRE', 'CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Modifier un document")
     public ResponseEntity<DocumentResponseDTO> update(
             @PathVariable Long id,
@@ -69,7 +81,7 @@ public class DocumentController {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.titre() + ".pdf\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + document.titre() + "\"")
                 .body(resource);
     }
 

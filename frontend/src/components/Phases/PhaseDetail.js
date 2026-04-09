@@ -78,12 +78,22 @@ const PhaseDetail = () => {
         <div style={{padding: '20px'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px'}}>
                 <h2>Phase: {phase.libelle || phase.code}</h2>
-                <button
-                    onClick={() => navigate(`/projets/${phase.projetId}`)}
-                    style={{background: '#6c757d', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}
-                >
-                    Retour au projet
-                </button>
+                <div style={{display: 'flex', gap: '10px'}}>
+                    <button
+                        onClick={() => navigate(`/projets/${phase.projetId}`)}
+                        style={{background: '#6c757d', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}
+                    >
+                        Retour au projet
+                    </button>
+                    {(hasRole('CHEF_PROJET') || hasRole('DIRECTEUR') || hasRole('ADMIN')) && (
+                        <button
+                            onClick={() => navigate(`/phases/edit/${id}`)}
+                            style={{background: '#f39c12', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}
+                        >
+                            Modifier
+                        </button>
+                    )}
+                </div>
             </div>
 
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
@@ -113,7 +123,7 @@ const PhaseDetail = () => {
                                 type="checkbox"
                                 checked={phase.estTerminee || false}
                                 onChange={(e) => updateEtat('realisation', e.target.checked)}
-                                disabled={!hasRole('CHEF_PROJET') && !hasRole('DIRECTEUR')}
+                                disabled={!hasRole('CHEF_PROJET') && !hasRole('DIRECTEUR') && !hasRole('ADMIN')}
                             />
                             <strong>Terminee</strong>
                         </label>
@@ -124,7 +134,7 @@ const PhaseDetail = () => {
                                 type="checkbox"
                                 checked={phase.estFacturee || false}
                                 onChange={(e) => updateEtat('facturation', e.target.checked)}
-                                disabled={!hasRole('COMPTABLE')}
+                                disabled={!hasRole('COMPTABLE') && !hasRole('ADMIN')}
                             />
                             <strong>Facturee</strong>
                         </label>
@@ -135,7 +145,7 @@ const PhaseDetail = () => {
                                 type="checkbox"
                                 checked={phase.estPayee || false}
                                 onChange={(e) => updateEtat('paiement', e.target.checked)}
-                                disabled={!hasRole('COMPTABLE')}
+                                disabled={!hasRole('COMPTABLE') && !hasRole('ADMIN')}
                             />
                             <strong>Payee</strong>
                         </label>
@@ -150,24 +160,24 @@ const PhaseDetail = () => {
                 ) : (
                     <table style={{width: '100%', borderCollapse: 'collapse'}}>
                         <thead>
-                            <tr style={{background: '#f8f9fa'}}>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Employe</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Role</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Date debut</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Date fin</th>
-                            </tr>
+                        <tr style={{background: '#f8f9fa'}}>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Employe</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Role</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Date debut</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Date fin</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {affectations.map(aff => (
-                                <tr key={aff.employeId}>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
-                                        {aff.employePrenom} {aff.employeNom} ({aff.employeMatricule})
-                                    </td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{aff.role || '-'}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(aff.dateDebut)}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(aff.dateFin)}</td>
-                                </tr>
-                            ))}
+                        {affectations.map(aff => (
+                            <tr key={aff.employeId}>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
+                                    {aff.employePrenom} {aff.employeNom} ({aff.employeMatricule})
+                                </td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{aff.role || '-'}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(aff.dateDebut)}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(aff.dateFin)}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 )}
@@ -180,20 +190,20 @@ const PhaseDetail = () => {
                 ) : (
                     <table style={{width: '100%', borderCollapse: 'collapse'}}>
                         <thead>
-                            <tr style={{background: '#f8f9fa'}}>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Code</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Libelle</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Description</th>
-                            </tr>
+                        <tr style={{background: '#f8f9fa'}}>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Code</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Libelle</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Description</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {livrables.map(liv => (
-                                <tr key={liv.id}>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.code || '-'}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.libelle || '-'}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.description || '-'}</td>
-                                </tr>
-                            ))}
+                        {livrables.map(liv => (
+                            <tr key={liv.id}>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.code || '-'}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.libelle || '-'}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{liv.description || '-'}</td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 )}

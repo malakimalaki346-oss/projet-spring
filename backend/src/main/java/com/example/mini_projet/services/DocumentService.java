@@ -1,7 +1,5 @@
 package com.example.mini_projet.services;
 
-
-
 import com.example.mini_projet.dto.request.DocumentRequestDTO;
 import com.example.mini_projet.dto.response.DocumentResponseDTO;
 import com.example.mini_projet.entities.Document;
@@ -14,12 +12,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.net.MalformedURLException;
-import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -41,6 +37,37 @@ public class DocumentService {
         this.documentMapper = documentMapper;
     }
 
+    // Nouvelle methode create avec fichier
+    public DocumentResponseDTO create(Long projetId, DocumentRequestDTO requestDTO, MultipartFile fichier) {
+        Projet projet = projetRepository.findById(projetId)
+                .orElseThrow(() -> new ResourceNotFoundException("Projet non trouve avec l'id: " + projetId));
+
+        String cheminFichier = null;
+        if (fichier != null && !fichier.isEmpty()) {
+            try {
+                String uploadDir = "C:/uploads/documents/";
+                Path uploadPath = Paths.get(uploadDir);
+                if (!Files.exists(uploadPath)) {
+                    Files.createDirectories(uploadPath);
+                }
+                String fileName = System.currentTimeMillis() + "_" + fichier.getOriginalFilename();
+                Path filePath = uploadPath.resolve(fileName);
+                fichier.transferTo(filePath.toFile());
+                cheminFichier = filePath.toString();
+            } catch (Exception e) {
+                throw new RuntimeException("Erreur lors de la sauvegarde du fichier: " + e.getMessage());
+            }
+        }
+
+        Document document = documentMapper.toEntity(requestDTO);
+        document.setProjet(projet);
+        document.setCheminFichier(cheminFichier);
+
+        Document saved = documentRepository.save(document);
+        return documentMapper.toResponseDTO(saved);
+    }
+
+    // Ancienne methode create (conservee pour compatibilite)
     public DocumentResponseDTO create(Long projetId, DocumentRequestDTO requestDTO) {
         Projet projet = projetRepository.findById(projetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Projet non trouve avec l'id: " + projetId));

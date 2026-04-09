@@ -23,6 +23,9 @@ import Unauthorized from './pages/Unauthorized';
 import RoleRoute from './routes/RoleRoute';
 import Alert from './components/Common/Alert';
 import './App.css';
+import PhaseForm from './components/Phases/PhaseForm';
+import PhaseEditForm from './components/Phases/PhaseEditForm';
+
 
 const AppContent = () => {
     const { isAuthenticated, loading } = useAuth();
@@ -74,6 +77,9 @@ const AppContent = () => {
                     <Route path="/employes/new" element={<EmployeForm />} />
                     <Route path="/employes/:id" element={<EmployeDetail />} />
                     <Route path="/employes/edit/:id" element={<EmployeForm />} />
+                    <Route path="/projets/:id/phases/new" element={<PhaseForm />} />
+                    <Route path="/phases/edit/:id" element={<PhaseEditForm />} />
+
                     <Route path="/phases/:id" element={<PhaseDetail />} />
                     <Route path="/factures" element={
                         <RoleRoute allowedRoles={['COMPTABLE', 'DIRECTEUR']}>
