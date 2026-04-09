@@ -80,7 +80,11 @@ Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
 
 ## backend/
 
-![WhatsApp Image 2026-04-03 at 09 22 25](https://github.com/user-attachments/assets/d66b35eb-b877-4edc-b4af-fbd98f5c6924)
+<img width="698" height="284" alt="image" src="https://github.com/user-attachments/assets/e5063a06-111c-41a2-a4c9-f5c5cfefd594" />
+
+
+<img width="653" height="734" alt="image" src="https://github.com/user-attachments/assets/845225c9-a020-4181-8544-d8f3042fda08" />
+
 
 <img width="474" height="851" alt="image" src="https://github.com/user-attachments/assets/93b5729f-f6e1-4243-9309-6dc2a91f2f85" />
 
