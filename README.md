@@ -117,9 +117,81 @@ Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
 
 ### Étapes d'installation
 
-```bash
-git clone https://github.com/malakimalaki346-oss/projet-spring.git
-cd projet-spring
+    bash
+     git clone https://github.com/malakimalaki346-oss/projet-spring.git
+     cd projet-spring
+
+
+## Lancer avec Docker
+
+    docker-compose up --build
+
+## Lancer sans Docker
+
+### Backend
+
+    cd backend
+    mvn clean install
+    <img width="1855" height="928" alt="Capture d&#39;écran 2026-04-09 111031" src="https://github.com/user-attachments/assets/08ce3b08-7815-4166-8a44-19f728084e40" />
+    <img width="1815" height="905" alt="Capture d&#39;écran 2026-04-09 111121" src="https://github.com/user-attachments/assets/3eebfcd6-c9c8-4063-82a7-aed68be691da" />
+
+    mvn spring-boot:run
+    <img width="1867" height="931" alt="Capture d&#39;écran 2026-04-09 111240" src="https://github.com/user-attachments/assets/1f8750ab-7ba7-457f-af3f-b0b191d346af" />
+    <img width="1866" height="927" alt="Capture d&#39;écran 2026-04-09 111250" src="https://github.com/user-attachments/assets/0add9449-aeaa-4962-92b8-78a4ae422354" />
+    <img width="1866" height="924" alt="Capture d&#39;écran 2026-04-09 111301" src="https://github.com/user-attachments/assets/22858c49-d225-402d-ad8e-0359dcc00483" />
+
+    
+
+### Frontend
+
+    cd frontend
+    npm install
+    npm start
+
+
+## Sécurité
+- Type d'authentification : JWT (JSON Web Token) avec expiration 24h
+
+- Gestion des rôles : ADMIN, DIRECTEUR, CHEF_PROJET, COMPTABLE, SECRETAIRE, TECHNICIEN
+
+- Protection des routes :
+
+      Endpoints backend protégés avec @PreAuthorize
+
+      Routes frontend protégées avec PrivateRoute component
+
+      Intercepteur Axios pour ajout automatique du token
+
+## Rôles et permissions
+Rôle:          Permissions
+ADMIN:	       Gestion complète (employés, profils, suppression)
+DIRECTEUR:  	 Consultation tout, modification projets (montant, chef)
+CHEF_PROJET:	 Gestion phases, affectations, livrables
+COMPTABLE:	   Gestion factures, paiements, états financiers
+SECRETAIRE:	   Gestion organismes, création projets, documents
+TECHNICIEN:	   Consultation seule
+
+## Fonctionnalités principales
+- Gestion complète des organismes clients (CRUD + recherche)
+
+- Gestion des employés avec profils et disponibilité
+
+- Gestion des projets avec règles métier (dates, montants)
+
+- Gestion des phases avec calcul automatique des montants
+
+- Affectation des employés aux phases avec vérification de disponibilité
+
+- Gestion des livrables et documents techniques
+
+- Gestion des factures avec suivi des états (facturée/payée)
+
+- Authentification JWT avec gestion des rôles
+
+- Documentation API Swagger
+
+
+
 
 
 
