@@ -76,7 +76,7 @@ public class PhaseController {
     }
 
     @PatchMapping("/phases/{id}/facturation")
-    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Mettre à jour l'état de facturation d'une phase")
     public ResponseEntity<PhaseResponseDTO> updateEtatFacturation(
             @PathVariable Long id,
@@ -86,7 +86,7 @@ public class PhaseController {
     }
 
     @PatchMapping("/phases/{id}/paiement")
-    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Mettre à jour l'état de paiement d'une phase")
     public ResponseEntity<PhaseResponseDTO> updateEtatPaiement(
             @PathVariable Long id,
@@ -104,7 +104,7 @@ public class PhaseController {
     }
 
     @GetMapping("/phases/terminees-non-facturees")
-    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Lister les phases terminées non facturées")
     public ResponseEntity<List<PhaseResponseDTO>> findTermineesNonFacturees() {
         List<PhaseResponseDTO> response = phaseService.findTermineesNonFacturees();
@@ -112,7 +112,7 @@ public class PhaseController {
     }
 
     @GetMapping("/phases/facturees-non-payees")
-    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Lister les phases facturées non payées")
     public ResponseEntity<List<PhaseResponseDTO>> findFactureesNonPayees() {
         List<PhaseResponseDTO> response = phaseService.findFactureesNonPayees();
