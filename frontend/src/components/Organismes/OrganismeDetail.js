@@ -47,6 +47,11 @@ const OrganismeDetail = () => {
         }
     };
 
+    const handleEdit = () => {
+        console.log('Navigation vers modification, id:', id);
+        navigate(`/organismes/edit/${id}`);
+    };
+
     const formatMontant = (montant) => {
         if (!montant && montant !== 0) return '0 DH';
         return montant.toLocaleString('fr-FR') + ' DH';
@@ -78,6 +83,7 @@ const OrganismeDetail = () => {
                     </button>
                     {hasRole('SECRETAIRE') && (
                         <button
+                            onClick={handleEdit}
                             style={{background: '#f39c12', color: 'white', padding: '8px 16px', border: 'none', borderRadius: '5px', cursor: 'pointer'}}
                         >
                             Modifier
@@ -115,37 +121,37 @@ const OrganismeDetail = () => {
                 ) : (
                     <table style={{width: '100%', borderCollapse: 'collapse'}}>
                         <thead>
-                            <tr style={{background: '#f8f9fa'}}>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Code</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Nom</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Chef de projet</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Date debut</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Date fin</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Montant</th>
-                                <th style={{padding: '12px', textAlign: 'left'}}>Actions</th>
-                            </tr>
+                        <tr style={{background: '#f8f9fa'}}>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Code</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Nom</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Chef de projet</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Date debut</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Date fin</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Montant</th>
+                            <th style={{padding: '12px', textAlign: 'left'}}>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {projets.map(projet => (
-                                <tr key={projet.id}>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{projet.code || '-'}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{projet.nom || '-'}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
-                                        {projet.chefProjetPrenom} {projet.chefProjetNom}
-                                    </td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(projet.dateDebut)}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(projet.dateFin)}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatMontant(projet.montantGlobal)}</td>
-                                    <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
-                                        <button
-                                            onClick={() => navigate(`/projets/${projet.id}`)}
-                                            style={{background: '#3498db', color: 'white', padding: '5px 10px', border: 'none', borderRadius: '3px', cursor: 'pointer'}}
-                                        >
-                                            Voir projet
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
+                        {projets.map(projet => (
+                            <tr key={projet.id}>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{projet.code || '-'}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{projet.nom || '-'}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
+                                    {projet.chefProjetPrenom} {projet.chefProjetNom}
+                                </td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(projet.dateDebut)}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatDate(projet.dateFin)}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>{formatMontant(projet.montantGlobal)}</td>
+                                <td style={{padding: '12px', borderBottom: '1px solid #eee'}}>
+                                    <button
+                                        onClick={() => navigate(`/projets/${projet.id}`)}
+                                        style={{background: '#3498db', color: 'white', padding: '5px 10px', border: 'none', borderRadius: '3px', cursor: 'pointer'}}
+                                    >
+                                        Voir projet
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
                         </tbody>
                     </table>
                 )}
