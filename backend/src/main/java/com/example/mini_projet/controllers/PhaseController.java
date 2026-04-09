@@ -25,7 +25,7 @@ public class PhaseController {
     }
 
     @PostMapping("/projets/{projetId}/phases")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Créer une phase dans un projet")
     public ResponseEntity<PhaseResponseDTO> create(
             @PathVariable Long projetId,
@@ -35,7 +35,7 @@ public class PhaseController {
     }
 
     @PutMapping("/phases/{id}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Modifier une phase")
     public ResponseEntity<PhaseResponseDTO> update(
             @PathVariable Long id,
@@ -66,7 +66,7 @@ public class PhaseController {
     }
 
     @PatchMapping("/phases/{id}/realisation")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Mettre à jour l'état de réalisation d'une phase")
     public ResponseEntity<PhaseResponseDTO> updateEtatRealisation(
             @PathVariable Long id,
@@ -76,7 +76,7 @@ public class PhaseController {
     }
 
     @PatchMapping("/phases/{id}/facturation")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Mettre à jour l'état de facturation d'une phase")
     public ResponseEntity<PhaseResponseDTO> updateEtatFacturation(
             @PathVariable Long id,
@@ -86,7 +86,7 @@ public class PhaseController {
     }
 
     @PatchMapping("/phases/{id}/paiement")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Mettre à jour l'état de paiement d'une phase")
     public ResponseEntity<PhaseResponseDTO> updateEtatPaiement(
             @PathVariable Long id,
@@ -96,7 +96,7 @@ public class PhaseController {
     }
 
     @DeleteMapping("/phases/{id}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Supprimer une phase")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         phaseService.delete(id);
@@ -104,7 +104,7 @@ public class PhaseController {
     }
 
     @GetMapping("/phases/terminees-non-facturees")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Lister les phases terminées non facturées")
     public ResponseEntity<List<PhaseResponseDTO>> findTermineesNonFacturees() {
         List<PhaseResponseDTO> response = phaseService.findTermineesNonFacturees();
@@ -112,7 +112,7 @@ public class PhaseController {
     }
 
     @GetMapping("/phases/facturees-non-payees")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Lister les phases facturées non payées")
     public ResponseEntity<List<PhaseResponseDTO>> findFactureesNonPayees() {
         List<PhaseResponseDTO> response = phaseService.findFactureesNonPayees();

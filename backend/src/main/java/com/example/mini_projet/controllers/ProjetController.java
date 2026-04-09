@@ -30,7 +30,7 @@ public class ProjetController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('SECRETAIRE', 'DIRECTEUR', 'CHEF_PROJET')")
+    @PreAuthorize("hasAnyRole('SECRETAIRE', 'DIRECTEUR', 'CHEF_PROJET', 'ADMIN')")
     @Operation(summary = "Créer un projet")
     public ResponseEntity<ProjetResponseDTO> create(@Valid @RequestBody ProjetRequestDTO requestDTO) {
         ProjetResponseDTO response = projetService.create(requestDTO);
@@ -38,7 +38,7 @@ public class ProjetController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('SECRETAIRE', 'DIRECTEUR', 'CHEF_PROJET')")
+    @PreAuthorize("hasAnyRole('SECRETAIRE', 'DIRECTEUR', 'CHEF_PROJET', 'ADMIN')")
     @Operation(summary = "Modifier un projet")
     public ResponseEntity<ProjetResponseDTO> update(
             @PathVariable Long id,

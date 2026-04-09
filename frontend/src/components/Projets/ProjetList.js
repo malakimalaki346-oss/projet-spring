@@ -8,7 +8,12 @@ const ProjetList = () => {
     const [projets, setProjets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const { hasRole } = useAuth();
+    const { hasRole, user } = useAuth();
+
+    console.log('User role:', user?.role);
+    console.log('HasRole ADMIN:', hasRole('ADMIN'));
+    console.log('HasRole DIRECTEUR:', hasRole('DIRECTEUR'));
+    console.log('HasRole SECRETAIRE:', hasRole('SECRETAIRE'));
 
     useEffect(() => {
         loadProjets();
@@ -17,9 +22,9 @@ const ProjetList = () => {
     const loadProjets = async () => {
         try {
             const data = await projetService.getAllList();
-            setProjets(data);
+            setProjets(data || []);
         } catch (error) {
-            console.error('Erreur chargement projets:', error);
+            console.error('Erreur:', error);
         } finally {
             setLoading(false);
         }
@@ -30,10 +35,21 @@ const ProjetList = () => {
             try {
                 await projetService.delete(id);
                 loadProjets();
+                alert('Projet supprime avec succes');
             } catch (error) {
-                alert('Erreur lors de la suppression');
+                alert(error.response?.data?.message || 'Erreur lors de la suppression');
             }
         }
+    };
+
+    const formatDate = (dateString) => {
+        if (!dateString) return '-';
+        return new Date(dateString).toLocaleDateString('fr-FR');
+    };
+
+    const formatMontant = (montant) => {
+        if (!montant) return '0 DH';
+        return montant.toLocaleString('fr-FR') + ' DH';
     };
 
     const filteredProjets = projets.filter(projet =>
@@ -48,7 +64,7 @@ const ProjetList = () => {
         <div className="projet-list">
             <div className="list-header">
                 <h2>Projets</h2>
-                {hasRole('SECRETAIRE') && (
+                {(hasRole('SECRETAIRE') || hasRole('ADMIN')) && (
                     <Link to="/projets/new" className="btn-add">+ Nouveau projet</Link>
                 )}
             </div>
@@ -64,38 +80,38 @@ const ProjetList = () => {
 
             <table className="data-table">
                 <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                        <th>Client</th>
-                        <th>Chef de projet</th>
-                        <th>Date début</th>
-                        <th>Date fin</th>
-                        <th>Montant</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Code</th>
+                    <th>Nom</th>
+                    <th>Client</th>
+                    <th>Chef de projet</th>
+                    <th>Date debut</th>
+                    <th>Date fin</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {filteredProjets.map(projet => (
-                        <tr key={projet.id}>
-                            <td>{projet.code}</td>
-                            <td>{projet.nom}</td>
-                            <td>{projet.organismeNom}</td>
-                            <td>{projet.chefProjetPrenom} {projet.chefProjetNom}</td>
-                            <td>{new Date(projet.dateDebut).toLocaleDateString()}</td>
-                            <td>{new Date(projet.dateFin).toLocaleDateString()}</td>
-                            <td>{projet.montantGlobal?.toLocaleString()} DH</td>
-                            <td className="actions">
-                                <Link to={`/projets/${projet.id}`} className="btn-view">Voir</Link>
-                                {hasRole('SECRETAIRE') && (
-                                    <Link to={`/projets/edit/${projet.id}`} className="btn-edit">Modifier</Link>
-                                )}
-                                {hasRole('DIRECTEUR') && (
-                                    <button onClick={() => handleDelete(projet.id)} className="btn-delete">Supprimer</button>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
+                {filteredProjets.map(projet => (
+                    <tr key={projet.id}>
+                        <td>{projet.code || '-'}</td>
+                        <td>{projet.nom || '-'}</td>
+                        <td>{projet.organismeNom || '-'}</td>
+                        <td>{projet.chefProjetPrenom} {projet.chefProjetNom}</td>
+                        <td>{formatDate(projet.dateDebut)}</td>
+                        <td>{formatDate(projet.dateFin)}</td>
+                        <td>{formatMontant(projet.montantGlobal)}</td>
+                        <td className="actions">
+                            <Link to={`/projets/${projet.id}`} className="btn-view">Voir</Link>
+                            {(hasRole('SECRETAIRE') || hasRole('ADMIN')) && (
+                                <Link to={`/projets/edit/${projet.id}`} className="btn-edit">Modifier</Link>
+                            )}
+                            {(hasRole('DIRECTEUR') || hasRole('ADMIN')) && (
+                                <button onClick={() => handleDelete(projet.id)} className="btn-delete">Supprimer</button>
+                            )}
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>
