@@ -103,10 +103,10 @@ const ProjetList = () => {
                         <td>{formatMontant(projet.montantGlobal)}</td>
                         <td className="actions">
                             <Link to={`/projets/${projet.id}`} className="btn-view">Voir</Link>
-                            {(hasRole('SECRETAIRE') || hasRole('ADMIN')) && (
+                            {(hasRole('SECRETAIRE') || hasRole('ADMIN') || hasRole('DIRECTEUR')) && (
                                 <Link to={`/projets/edit/${projet.id}`} className="btn-edit">Modifier</Link>
                             )}
-                            {(hasRole('DIRECTEUR') || hasRole('ADMIN')) && (
+                            {hasRole('ADMIN') && (
                                 <button onClick={() => handleDelete(projet.id)} className="btn-delete">Supprimer</button>
                             )}
                         </td>

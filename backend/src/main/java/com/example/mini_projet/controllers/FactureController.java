@@ -25,7 +25,7 @@ public class FactureController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Créer une facture")
     public ResponseEntity<FactureResponseDTO> create(@Valid @RequestBody FactureRequestDTO requestDTO) {
         FactureResponseDTO response = factureService.create(requestDTO);
@@ -33,7 +33,7 @@ public class FactureController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Modifier une facture")
     public ResponseEntity<FactureResponseDTO> update(
             @PathVariable Long id,
@@ -43,7 +43,7 @@ public class FactureController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('COMPTABLE', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Consulter une facture")
     public ResponseEntity<FactureResponseDTO> findById(@PathVariable Long id) {
         FactureResponseDTO response = factureService.findById(id);
@@ -51,7 +51,7 @@ public class FactureController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('COMPTABLE', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Lister toutes les factures")
     public ResponseEntity<List<FactureResponseDTO>> findAll() {
         List<FactureResponseDTO> response = factureService.findAll();
@@ -59,7 +59,7 @@ public class FactureController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Supprimer une facture")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         System.out.println(" Contrôleur DELETE appelé avec id = " + id);
@@ -68,7 +68,7 @@ public class FactureController {
     }
 
     @PostMapping("/{id}/paiement")
-    @PreAuthorize("hasRole('COMPTABLE')")
+    @PreAuthorize("hasAnyRole('COMPTABLE', 'ADMIN')")
     @Operation(summary = "Enregistrer le paiement d'une facture")
     public ResponseEntity<FactureResponseDTO> enregistrerPaiement(@PathVariable Long id) {
         FactureResponseDTO response = factureService.enregistrerPaiement(id);

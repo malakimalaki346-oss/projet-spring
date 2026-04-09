@@ -4,9 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 
 const Sidebar = () => {
-    const { hasRole, user } = useAuth();
-
-    const role = user?.role?.replace('ROLE_', '');
+    const { hasRole } = useAuth();
 
     return (
         <div className="sidebar">
@@ -20,20 +18,17 @@ const Sidebar = () => {
                 <li>
                     <NavLink to="/organismes">Organismes</NavLink>
                 </li>
-                {/* Employes: visible seulement pour ADMIN et DIRECTEUR */}
-                {(role === 'ADMIN' || role === 'DIRECTEUR') && (
+                {(hasRole('ADMIN') || hasRole('DIRECTEUR')) && (
                     <li>
                         <NavLink to="/employes">Employes</NavLink>
                     </li>
                 )}
-                {/* Factures: visible pour COMPTABLE et DIRECTEUR */}
-                {(role === 'COMPTABLE' || role === 'DIRECTEUR') && (
+                {(hasRole('ADMIN') || hasRole('COMPTABLE') || hasRole('DIRECTEUR')) && (
                     <li>
                         <NavLink to="/factures">Factures</NavLink>
                     </li>
                 )}
-                {/* Rapport phases: visible pour COMPTABLE et DIRECTEUR */}
-                {(role === 'COMPTABLE' || role === 'DIRECTEUR') && (
+                {(hasRole('ADMIN') || hasRole('COMPTABLE') || hasRole('DIRECTEUR')) && (
                     <li>
                         <NavLink to="/rapport-phases">Rapport phases</NavLink>
                     </li>
