@@ -99,11 +99,19 @@ Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
 
 ## frontend/
 
-<img width="458" height="837" alt="image" src="https://github.com/user-attachments/assets/8d4336e6-ca78-4cd4-829c-001d09db90d0" />
+<img width="653" height="798" alt="image" src="https://github.com/user-attachments/assets/13c3dec1-4354-4008-bcc6-09421e0b6413" />
 
 
-<img width="461" height="809" alt="image" src="https://github.com/user-attachments/assets/196b11ee-ba62-4995-82e7-fdf4c6e6b255" />
+<img width="640" height="799" alt="image" src="https://github.com/user-attachments/assets/00e7204f-183f-48ef-8fb0-1b1658396f69" />
 
+
+<img width="646" height="810" alt="image" src="https://github.com/user-attachments/assets/c368c024-921c-412a-86e4-c6a1620b1b51" />
+
+
+<img width="620" height="817" alt="image" src="https://github.com/user-attachments/assets/7ccd4775-0235-4fb6-bdb1-83aae0f471e8" />
+
+
+<img width="634" height="118" alt="image" src="https://github.com/user-attachments/assets/6a5dafe6-543d-4e14-b2ad-83be61890620" />
 
 
 ## Installation et exécution
