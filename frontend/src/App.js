@@ -79,7 +79,8 @@ const AppContent = () => {
                     <Route path="/employes/edit/:id" element={<EmployeForm />} />
                     <Route path="/projets/:id/phases/new" element={<PhaseForm />} />
                     <Route path="/phases/edit/:id" element={<PhaseEditForm />} />
-
+                    <Route path="/organismes/new" element={<OrganismeForm />} />
+                    <Route path="/organismes/edit/:id" element={<OrganismeForm />} />
                     <Route path="/phases/:id" element={<PhaseDetail />} />
                     <Route path="/factures" element={
                         <RoleRoute allowedRoles={['COMPTABLE', 'DIRECTEUR']}>
@@ -92,6 +93,8 @@ const AppContent = () => {
                         </RoleRoute>
                     } />
                     <Route path="/unauthorized" element={<Unauthorized />} />
+                    <Route path="/organismes/edit/:id" element={<OrganismeForm />} />
+
                     <Route path="/" element={<Navigate to="/dashboard" />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

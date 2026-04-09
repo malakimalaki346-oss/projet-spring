@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import organismeService from '../../services/organismeService';
 import { useAuth } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
-
 import './OrganismeList.css';
 
 const OrganismeList = () => {
@@ -49,7 +48,7 @@ const OrganismeList = () => {
             <div className="list-header">
                 <h2>Organismes</h2>
                 {hasRole('SECRETAIRE') && (
-                    <button className="btn-add">+ Nouvel organisme</button>
+                    <Link to="/organismes/new" className="btn-add">+ Nouvel organisme</Link>
                 )}
             </div>
 
@@ -64,34 +63,34 @@ const OrganismeList = () => {
 
             <table className="data-table">
                 <thead>
-                    <tr>
-                        <th>Code</th>
-                        <th>Nom</th>
-                        <th>Contact</th>
-                        <th>Telephone</th>
-                        <th>Email</th>
-                        <th>Actions</th>
-                    </tr>
+                <tr>
+                    <th>Code</th>
+                    <th>Nom</th>
+                    <th>Contact</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {filteredOrganismes.map(org => (
-                        <tr key={org.id}>
-                            <td>{org.code || '-'}</td>
-                            <td>{org.nom || '-'}</td>
-                            <td>{org.contactNom || '-'}</td>
-                            <td>{org.telephone || '-'}</td>
-                            <td>{org.contactEmail || '-'}</td>
-                            <td className="actions">
-                                     <Link to={`/organismes/${org.id}`} className="btn-view">Voir</Link>
-                                {hasRole('SECRETAIRE') && (
-                                    <button className="btn-edit">Modifier</button>
-                                )}
-                                {hasRole('ADMIN') && (
-                                    <button onClick={() => handleDelete(org.id)} className="btn-delete">Supprimer</button>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
+                {filteredOrganismes.map(org => (
+                    <tr key={org.id}>
+                        <td>{org.code || '-'}</td>
+                        <td>{org.nom || '-'}</td>
+                        <td>{org.contactNom || '-'}</td>
+                        <td>{org.telephone || '-'}</td>
+                        <td>{org.contactEmail || '-'}</td>
+                        <td className="actions">
+                            <Link to={`/organismes/${org.id}`} className="btn-view">Voir</Link>
+                            {hasRole('SECRETAIRE') && (
+                                <Link to={`/organismes/edit/${org.id}`} className="btn-edit">Modifier</Link>
+                            )}
+                            {hasRole('ADMIN') && (
+                                <button onClick={() => handleDelete(org.id)} className="btn-delete">Supprimer</button>
+                            )}
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
         </div>
