@@ -15,6 +15,7 @@ L'application est utilisée par plusieurs profils internes : directeur, chefs de
 - Permettre la recherche avancée et la génération de rapports par période
 
 ## Architecture du projet
+![WhatsApp Image 2026-04-10 at 21 23 06 (1)](https://github.com/user-attachments/assets/d3ed0ad8-3381-4ecf-8187-377095a5ef0a)
 
 ### Backend (Spring Boot)
 - Architecture en couches : Controllers, Services, Repositories, Entities
