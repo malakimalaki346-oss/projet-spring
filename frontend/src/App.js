@@ -83,12 +83,12 @@ const AppContent = () => {
                     <Route path="/organismes/edit/:id" element={<OrganismeForm />} />
                     <Route path="/phases/:id" element={<PhaseDetail />} />
                     <Route path="/factures" element={
-                        <RoleRoute allowedRoles={['COMPTABLE', 'DIRECTEUR']}>
+                        <RoleRoute allowedRoles={['COMPTABLE', 'DIRECTEUR','ADMIN']}>
                             <FactureList />
                         </RoleRoute>
                     } />
                     <Route path="/rapport-phases" element={
-                        <RoleRoute allowedRoles={['COMPTABLE', 'DIRECTEUR']}>
+                        <RoleRoute allowedRoles={['COMPTABLE', 'DIRECTEUR','ADMIN']}>
                             <RapportPhases />
                         </RoleRoute>
                     } />
