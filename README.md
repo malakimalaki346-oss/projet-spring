@@ -351,9 +351,9 @@ Dockerfile frontend : Build avec Node.js, production avec Nginx
 docker-compose.yml : Orchestration des trois services (MySQL, backend, frontend)
 
 # Auteurs
-Nom 1 : OUARIBA FATIMA ZAHRA
+Nom 1 :## OUARIBA FATIMA ZAHRA
 
-Nom 2 : NAIT HADDOU MALAK
+Nom 2 :## NAIT HADDOU MALAK
 
 ## Remarques
 Les mots de passe sont hashés avec BCrypt avant stockage
