@@ -5,7 +5,7 @@ const authService = {
         console.log('Login attempt with:', login);
         console.log('Type of login:', typeof login);
 
-        // Forcer les valeurs en chaînes
+
         const payload = {
             login: String(login).trim(),
             password: String(password)
