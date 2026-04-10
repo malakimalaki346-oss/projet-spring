@@ -25,7 +25,7 @@ public class AffectationController {
     }
 
     @PostMapping("/phases/{phaseId}/employes/{employeId}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN','CHEF_PROJET', 'DIRECTEUR')")
     @Operation(summary = "Affecter un employé à une phase")
     public ResponseEntity<AffectationResponseDTO> affecterEmploye(
             @PathVariable Long phaseId,
@@ -36,7 +36,7 @@ public class AffectationController {
     }
 
     @PutMapping("/phases/{phaseId}/employes/{employeId}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN','CHEF_PROJET', 'DIRECTEUR')")
     @Operation(summary = "Modifier une affectation")
     public ResponseEntity<AffectationResponseDTO> updateAffectation(
             @PathVariable Long phaseId,
@@ -70,7 +70,7 @@ public class AffectationController {
     }
 
     @DeleteMapping("/phases/{phaseId}/employes/{employeId}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('ADMIN','CHEF_PROJET', 'DIRECTEUR')")
     @Operation(summary = "Désaffecter un employé d'une phase")
     public ResponseEntity<Void> desaffecterEmploye(
             @PathVariable Long phaseId,

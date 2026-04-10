@@ -25,7 +25,7 @@ public class LivrableController {
     }
 
     @PostMapping("/phases/{phaseId}/livrables")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Ajouter un livrable à une phase")
     public ResponseEntity<LivrableResponseDTO> create(
             @PathVariable Long phaseId,
@@ -35,7 +35,7 @@ public class LivrableController {
     }
 
     @PutMapping("/livrables/{id}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Modifier un livrable")
     public ResponseEntity<LivrableResponseDTO> update(
             @PathVariable Long id,
@@ -59,7 +59,7 @@ public class LivrableController {
     }
 
     @DeleteMapping("/livrables/{id}")
-    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR')")
+    @PreAuthorize("hasAnyRole('CHEF_PROJET', 'DIRECTEUR', 'ADMIN')")
     @Operation(summary = "Supprimer un livrable")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         livrableService.delete(id);

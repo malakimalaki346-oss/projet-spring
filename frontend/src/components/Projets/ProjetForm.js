@@ -7,7 +7,7 @@ import './ProjetForm.css';
 const ProjetForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { hasRole, user } = useAuth();
+    const { hasRole } = useAuth();
     const [loading, setLoading] = useState(false);
     const [organismes, setOrganismes] = useState([]);
     const [chefs, setChefs] = useState([]);
@@ -24,8 +24,6 @@ const ProjetForm = () => {
     const [errors, setErrors] = useState({});
 
     const isSecretaire = hasRole('SECRETAIRE');
-    const isDirecteur = hasRole('DIRECTEUR');
-    const isAdmin = hasRole('ADMIN');
 
     useEffect(() => {
         loadOrganismes();
@@ -38,7 +36,16 @@ const ProjetForm = () => {
     const loadOrganismes = async () => {
         try {
             const response = await api.get('/organismes');
-            setOrganismes(response.data || []);
+            const data = response.data || [];
+            setOrganismes(data);
+
+            if (isSecretaire && data.length > 0 && !id) {
+                setFormData(prev => ({
+                    ...prev,
+                    organismeId: data[0].id,
+                    montantGlobal: 1
+                }));
+            }
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -47,7 +54,15 @@ const ProjetForm = () => {
     const loadChefs = async () => {
         try {
             const response = await api.get('/employes/profil/CHEF_PROJET');
-            setChefs(response.data || []);
+            const data = response.data || [];
+            setChefs(data);
+
+            if (isSecretaire && data.length > 0 && !id) {
+                setFormData(prev => ({
+                    ...prev,
+                    chefProjetId: data[0].id
+                }));
+            }
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -88,11 +103,15 @@ const ProjetForm = () => {
         if (formData.dateDebut > formData.dateFin) {
             newErrors.dateFin = 'Date fin doit etre apres date debut';
         }
-        if (!formData.montantGlobal || formData.montantGlobal <= 0) {
-            newErrors.montantGlobal = 'Montant positif requis';
-        }
         if (!formData.organismeId) newErrors.organismeId = 'Organisme requis';
-        if (!formData.chefProjetId) newErrors.chefProjetId = 'Chef projet requis';
+
+        if (!isSecretaire) {
+            if (!formData.montantGlobal || formData.montantGlobal <= 0) {
+                newErrors.montantGlobal = 'Montant positif requis';
+            }
+            if (!formData.chefProjetId) newErrors.chefProjetId = 'Chef projet requis';
+        }
+
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -101,12 +120,19 @@ const ProjetForm = () => {
         e.preventDefault();
         if (!validate()) return;
 
+        const submitData = { ...formData };
+        if (isSecretaire) {
+            if (!submitData.montantGlobal || submitData.montantGlobal <= 0) {
+                submitData.montantGlobal = 1;
+            }
+        }
+
         setLoading(true);
         try {
             if (id) {
-                await api.put(`/projets/${id}`, formData);
+                await api.put(`/projets/${id}`, submitData);
             } else {
-                await api.post('/projets', formData);
+                await api.post('/projets', submitData);
             }
             navigate('/projets');
         } catch (error) {
@@ -115,9 +141,6 @@ const ProjetForm = () => {
             setLoading(false);
         }
     };
-
-    const isMontantDisabled = isSecretaire;
-    const isChefDisabled = isSecretaire;
 
     return (
         <div className="projet-form">
@@ -160,15 +183,19 @@ const ProjetForm = () => {
                         name="montantGlobal"
                         value={formData.montantGlobal}
                         onChange={handleChange}
-                        disabled={isMontantDisabled}
-                        style={{backgroundColor: isMontantDisabled ? '#f0f0f0' : 'white'}}
+                        disabled={isSecretaire}
+                        style={{backgroundColor: isSecretaire ? '#f0f0f0' : 'white'}}
                     />
                     {errors.montantGlobal && <span className="error">{errors.montantGlobal}</span>}
                 </div>
 
                 <div className="form-group">
                     <label>Organisme client *</label>
-                    <select name="organismeId" value={formData.organismeId} onChange={handleChange}>
+                    <select
+                        name="organismeId"
+                        value={formData.organismeId}
+                        onChange={handleChange}
+                    >
                         <option value="">Selectionner</option>
                         {organismes.map(org => (
                             <option key={org.id} value={org.id}>{org.nom}</option>
@@ -183,8 +210,8 @@ const ProjetForm = () => {
                         name="chefProjetId"
                         value={formData.chefProjetId}
                         onChange={handleChange}
-                        disabled={isChefDisabled}
-                        style={{backgroundColor: isChefDisabled ? '#f0f0f0' : 'white'}}
+                        disabled={isSecretaire}
+                        style={{backgroundColor: isSecretaire ? '#f0f0f0' : 'white'}}
                     >
                         <option value="">Selectionner</option>
                         {chefs.map(chef => (

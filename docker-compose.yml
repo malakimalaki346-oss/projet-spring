@@ -20,7 +20,7 @@ services:
       retries: 10
 
   backend:
-    build: backend
+    build: ./backend
     container_name: suiviprojet-backend
     restart: always
     depends_on:
@@ -36,18 +36,18 @@ services:
       APP_JWT_EXPIRATION: 86400000
       SERVER_PORT: 8081
     ports:
-      - "8081:8081"
+      - "8082:8081"
     networks:
       - suiviprojet-network
 
   frontend:
-    build: frontend
+    build: ./frontend
     container_name: suiviprojet-frontend
     restart: always
     depends_on:
       - backend
     ports:
-      - "3000:80"
+      - "3001:80"
     networks:
       - suiviprojet-network
 
