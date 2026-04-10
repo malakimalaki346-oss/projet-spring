@@ -181,7 +181,7 @@ const PhaseDetail = () => {
                 </div>
             </div>
 
-            {/* Informations generales - identique */}
+
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
                 <h3>Informations generales</h3>
                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px', marginTop: '15px'}}>
@@ -200,7 +200,7 @@ const PhaseDetail = () => {
                 )}
             </div>
 
-            {/* Etat de la phase - identique */}
+
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
                 <h3>Etat de la phase</h3>
                 <div style={{display: 'flex', gap: '30px', marginTop: '15px'}}>
@@ -225,7 +225,7 @@ const PhaseDetail = () => {
                 </div>
             </div>
 
-            {/* Section Employes affectes avec bouton Ajouter */}
+
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', marginBottom: '30px'}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                     <h3>Employes affectes ({affectations.length})</h3>
@@ -303,7 +303,7 @@ const PhaseDetail = () => {
                 )}
             </div>
 
-            {/* Section Livrables avec bouton Ajouter */}
+
             <div style={{background: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)'}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px'}}>
                     <h3>Livrables ({livrables.length})</h3>
