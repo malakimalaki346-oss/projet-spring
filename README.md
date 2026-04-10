@@ -147,10 +147,12 @@ Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
 
     cd backend
     mvn clean install
+    
 <img width="1855" height="928" alt="Capture d&#39;écran 2026-04-09 111031" src="https://github.com/user-attachments/assets/08ce3b08-7815-4166-8a44-19f728084e40" />
 <img width="1815" height="905" alt="Capture d&#39;écran 2026-04-09 111121" src="https://github.com/user-attachments/assets/3eebfcd6-c9c8-4063-82a7-aed68be691da" />
 
     mvn spring-boot:run
+    
 <img width="1867" height="931" alt="Capture d&#39;écran 2026-04-09 111240" src="https://github.com/user-attachments/assets/1f8750ab-7ba7-457f-af3f-b0b191d346af" />
 <img width="1866" height="927" alt="Capture d&#39;écran 2026-04-09 111250" src="https://github.com/user-attachments/assets/0add9449-aeaa-4962-92b8-78a4ae422354" />
 <img width="1866" height="924" alt="Capture d&#39;écran 2026-04-09 111301" src="https://github.com/user-attachments/assets/22858c49-d225-402d-ad8e-0359dcc00483" />
@@ -161,10 +163,12 @@ Outils : Maven, IntelliJ IDEA, OBS Studio (pour les démos)
 
     cd frontend
     npm install
+    
 <img width="1864" height="908" alt="Capture d&#39;écran 2026-04-10 153936" src="https://github.com/user-attachments/assets/adc9e3d6-350d-46ed-ab90-4147a7028f37" />
 <img width="1881" height="347" alt="Capture d&#39;écran 2026-04-10 154028" src="https://github.com/user-attachments/assets/ea081ab4-ac7b-448b-a8d1-6479f46e3c74" />
 
     npm start
+    
 <img width="1868" height="661" alt="Capture d&#39;écran 2026-04-10 154112" src="https://github.com/user-attachments/assets/596d2401-66e8-48a3-a9cd-55654abec024" />
 
 
