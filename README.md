@@ -35,7 +35,7 @@ L'application est utilisée par plusieurs profils internes : directeur, chefs de
 - MySQL 8.0
 - 9 tables : profil, employe, organisme, projet, phase, affectation, livrable, document, facture
 - Relations JPA : OneToMany, ManyToOne, OneToOne
-- Clé composée pour la table affectation (employe_id, phase_id)
+- Clé composée pour la table affectation (employe_id, phase_id) 
 
 ### Infrastructure (Docker)
 - Conteneurisation complète avec Docker
