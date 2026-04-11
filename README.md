@@ -311,6 +311,12 @@ TECHNICIEN:	   Consultation seule
 
 ### ADMIN:
 
+
+
+https://github.com/user-attachments/assets/0a12e7c9-f74b-40b4-b0bf-e9bc2b8627f1
+
+
+
 https://github.com/user-attachments/assets/f676d35d-ee8f-4741-939c-df3e586a2e7b
 
 
