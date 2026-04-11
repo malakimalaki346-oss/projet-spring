@@ -1,7 +1,3 @@
-
-
-https://github.com/user-attachments/assets/486ddee1-6188-4e48-b7f5-104a2432fb74
-
 # Système de Suivi de Projets  
  
 ## Description    
