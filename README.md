@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/c8abebe0-efe4-4311-b53d-0d69e4627ed7
+
 # Système de Suivi de Projets 
  
 ## Description    
@@ -371,6 +375,10 @@ https://github.com/user-attachments/assets/556f0380-e9a5-4347-ba3d-3c002830c510
 
 ### Directeur suite
 
+
+ 
+
+https://github.com/user-attachments/assets/4fc9411c-2617-45f5-bf7e-7ee24c8a21b0
 
 
 
