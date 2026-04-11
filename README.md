@@ -12,7 +12,7 @@ L'application est utilisée par plusieurs profils internes : directeur, chefs de
 - Assurer un suivi financier complet avec gestion des factures et paiements
 - Garantir la sécurité des accès avec authentification JWT et gestion des rôles
 - Fournir une interface utilisateur intuitive pour la consultation et le reporting
-- Permettre la recherche avancée et la génération de rapports par période
+- Permettre la recherche avancée et la génération de rapports par période 
 
 ## Architecture du projet
 ![WhatsApp Image 2026-04-10 at 21 23 06 (1)](https://github.com/user-attachments/assets/d3ed0ad8-3381-4ecf-8187-377095a5ef0a)
