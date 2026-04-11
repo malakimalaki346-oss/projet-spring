@@ -318,6 +318,8 @@ TECHNICIEN:	   Consultation seule
 
 
 
+
+
 https://github.com/user-attachments/assets/efa8755e-eb9b-4998-b246-96f7bbf4c038
 
 https://github.com/user-attachments/assets/3f4b0367-9ced-4e0c-ab65-ebd81b889965
