@@ -373,13 +373,23 @@ https://github.com/user-attachments/assets/5d39ccb2-a764-4c21-869b-48389a034023
 
 
 
-### sec
+### SECRÉTAIRE
 
 https://github.com/user-attachments/assets/3cc7af7b-d6bc-4d9e-9411-4a753a94c401
 
 
 
-https://github.com/user-attachments/assets/c3da0149-678d-4e5d-a402-6d9f7f85c9c4
+
+
+### Directeur
+
+
+
+
+
+https://github.com/user-attachments/assets/556f0380-e9a5-4347-ba3d-3c002830c510
+
+
 
 
 
