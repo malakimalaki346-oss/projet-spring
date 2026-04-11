@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/486ddee1-6188-4e48-b7f5-104a2432fb74
+
 # Système de Suivi de Projets  
  
 ## Description    
@@ -352,7 +356,10 @@ https://github.com/user-attachments/assets/8e032346-959c-4c8b-81fc-d9fd6a30a20c
 
 ### Comptable
 
-https://github.com/user-attachments/assets/5005220c-1c92-4402-ad7e-a22db8281f5d
+
+
+
+https://github.com/user-attachments/assets/18f828a6-67fd-4460-a887-47633a059c20
 
 
 
