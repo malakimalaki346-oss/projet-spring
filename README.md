@@ -309,6 +309,14 @@ TECHNICIEN:	   Consultation seule
 
 ## Vidéo de démonstration
 
+### ADMIN:
+
+https://github.com/user-attachments/assets/f676d35d-ee8f-4741-939c-df3e586a2e7b
+
+
+
+
+https://github.com/user-attachments/assets/0d2c1957-e108-4172-9463-c52e73044e37
 
 
 
