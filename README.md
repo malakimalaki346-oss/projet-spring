@@ -1,6 +1,6 @@
 # Système de Suivi de Projets 
 
-## Description 
+## Description   
 
 Le projet consiste à développer une application web complète de suivi de projets destinée à une société de services réalisant des activités variées telles que le développement logiciel, les études techniques, l'intégration ou encore l'assistance. L'objectif principal est de centraliser l'information liée aux projets afin d'assurer une visibilité complète sur leur évolution, d'améliorer la coordination entre les intervenants et de sécuriser les opérations de mise à jour selon les responsabilités de chaque utilisateur.
 
