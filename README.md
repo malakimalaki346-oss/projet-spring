@@ -361,12 +361,7 @@ https://github.com/user-attachments/assets/5005220c-1c92-4402-ad7e-a22db8281f5d
 https://github.com/user-attachments/assets/3cc7af7b-d6bc-4d9e-9411-4a753a94c401
 
 
-
-
-
 ### Directeur
-
-
 
 
 
@@ -374,7 +369,7 @@ https://github.com/user-attachments/assets/556f0380-e9a5-4347-ba3d-3c002830c510
 
 
 
-
+### Directeur suite
 
 
 
